@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/sonner";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import { PrimaryNav } from "@/components/common/navmenu/primery-nav/primary-nav";
+import { SeconderyNav } from "@/components/common/navmenu/secondery-nav/secondery-nav";
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  style: ["normal"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,7 +25,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ClerkProvider>
-        <body className={inter.className}>
+        <body className={poppins.className}>
+          <div className="max-w-screen-2xl mx-auto px-6 py-5">
+            <PrimaryNav />
+            <SeconderyNav />
+          </div>
           {children}
           <Toaster />
         </body>

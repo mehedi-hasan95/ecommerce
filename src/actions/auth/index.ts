@@ -17,7 +17,8 @@ const updateClerkRole = async (clerkId: string, role: string) => {
 export const onCompleteUserRegistration = async (
   fullname: string,
   clerkId: string,
-  role: string
+  role: string,
+  email: string
 ) => {
   try {
     const registered = await db.user.create({
@@ -25,11 +26,13 @@ export const onCompleteUserRegistration = async (
         fullname,
         clerkId,
         role,
+        email,
       },
       select: {
         fullname: true,
         id: true,
         role: true,
+        email: true,
       },
     });
 

@@ -68,7 +68,8 @@ export const useSignUpForm = () => {
           const registered = await onCompleteUserRegistration(
             values.fullname,
             signUp.createdUserId,
-            values.role
+            values.role,
+            values.email
           );
 
           if (registered?.status == 200 && registered.user) {
