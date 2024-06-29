@@ -41,7 +41,7 @@ export const useSignInForm = () => {
         if (error.errors[0].code === "form_password_incorrect")
           toast("", {
             action: {
-              label: "Success",
+              label: "Error",
               onClick: () => console.log("Success"),
             },
             description: "email/password is incorrect try again",

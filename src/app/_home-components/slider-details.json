@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "bg": "#EBFAEB",
+    "heading1": "Save up 30% off",
+    "heading2": "Bengal Vegetable farm Organic 100%",
+    "heading3": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vehicula faucibus massa est elit maecenas.",
+    "img": "/hero1.png"
+  },
+  {
+    "id": 2,
+    "bg": "#F0EEEF",
+    "heading1": "Save up 20% off",
+    "heading2": "Cooking tips make cooking simple",
+    "heading3": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vehicula faucibus massa est elit maecenas.",
+    "img": "/hero2.png"
+  },
+  {
+    "id": 3,
+    "bg": "#FFDBE0",
+    "heading1": "Save up 25% off",
+    "heading2": "6 ways to prepare breakfast for 30",
+    "heading3": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vehicula faucibus massa est elit maecenas.",
+    "img": "/hero3.png"
+  }
+]
