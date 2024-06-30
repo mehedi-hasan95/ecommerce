@@ -10,7 +10,7 @@ const CategoryPage = async () => {
     <div>
       <div className="flex justify-between items-center pb-5">
         <h2 className="text-2xl font-bold">Category List</h2>
-        <Link href={"/admin-category/new"}>
+        <Link href={"/admin/admin-category/new"}>
           <Button>Create One</Button>
         </Link>
       </div>

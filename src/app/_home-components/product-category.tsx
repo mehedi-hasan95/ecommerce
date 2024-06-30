@@ -13,11 +13,11 @@ import Image from "next/image";
 export const ProductCategory = async () => {
   const categories = await AllCategoryAction();
   return (
-    <div className="relative max-w-screen-2xl mx-auto px-6 py-4">
+    <div className="relative max-w-screen-2xl mx-auto px-6 py-10 md:py-12 lg:py-16">
       <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold">
         Search by Category
       </h2>
-      <Carousel className="w-full pt-16">
+      <Carousel className="w-full pt-8">
         <CarouselContent>
           {categories.map((category) => (
             <CarouselItem
@@ -45,7 +45,7 @@ export const ProductCategory = async () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="absolute top-10 right-10">
+        <div className="absolute -top-4 right-10">
           <CarouselPrevious className="-left-6" />
           <CarouselNext className="bg-themeTwo text-white hover:bg-themeTwo" />
         </div>

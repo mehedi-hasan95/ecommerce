@@ -58,7 +58,7 @@ export const CategoryForm = ({ initialData }: Props) => {
                   onClick: () => console.log("Success"),
                 },
               });
-              router.push("/admin-category");
+              router.push("/admin/admin-category");
             } else {
               toast.error(data.error, {
                 action: {
@@ -76,7 +76,7 @@ export const CategoryForm = ({ initialData }: Props) => {
                   onClick: () => console.log("Success"),
                 },
               });
-              router.push("/admin-category");
+              router.push("/admin/admin-category");
             } else {
               toast.error(data.error, {
                 action: {
