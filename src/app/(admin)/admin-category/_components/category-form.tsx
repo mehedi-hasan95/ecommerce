@@ -42,7 +42,7 @@ export const CategoryForm = ({ initialData }: Props) => {
     defaultValues: {
       name: initialData?.name || "",
       img: initialData?.img || "",
-      color: initialData?.color || "",
+      color: initialData?.color || undefined,
     },
   });
 
@@ -76,7 +76,7 @@ export const CategoryForm = ({ initialData }: Props) => {
                   onClick: () => console.log("Success"),
                 },
               });
-              router.push("/category");
+              router.push("/admin-category");
             } else {
               toast.error(data.error, {
                 action: {
@@ -107,12 +107,15 @@ export const CategoryForm = ({ initialData }: Props) => {
               <FormItem>
                 <FormLabel>Color</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="e.g. #ededed"
-                    {...field}
-                    style={{ color: field.value }}
-                  />
+                  <div className="flex gap-x-2 items-center">
+                    <Input placeholder="e.g. #ededed" {...field} />
+                    <div
+                      className="h-6 w-6 rounded-full border"
+                      style={{ backgroundColor: field.value }}
+                    />
+                  </div>
                 </FormControl>
+
                 <FormDescription>Input your hex code.</FormDescription>
                 <FormMessage />
               </FormItem>

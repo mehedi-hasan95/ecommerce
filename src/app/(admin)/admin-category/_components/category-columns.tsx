@@ -5,6 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { ChevronsUpDown } from "lucide-react";
 import Image from "next/image";
+import { CategoryCell } from "./category-cell";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -83,5 +84,9 @@ export const columns: ColumnDef<CategoryProps>[] = [
         <Image src={row.original.img} alt="" height={40} width={40} />
       </div>
     ),
+  },
+  {
+    accessorKey: "Action",
+    cell: ({ row }) => <CategoryCell data={row.original} />,
   },
 ];

@@ -43,3 +43,28 @@ export const UpdateCategoryAction = async (
     return { error: "Something went wrong" };
   }
 };
+
+export const BulkDeleteCategoryAction = async (ids: string[]) => {
+  try {
+    const user = await userRole();
+    if (user !== "ADMIN") {
+      return { error: "Unauthorize user" };
+    }
+    await db.category.deleteMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+    revalidatePath("/");
+    return { success: "Category Update Successfully" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
+};
+
+export const AllCategoryAction = async () => {
+  const data = await db.category.findMany({ orderBy: { name: "asc" } });
+  return data;
+};

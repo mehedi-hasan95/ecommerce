@@ -17,5 +17,6 @@ export const CategorySchema = z.object({
     .refine(
       (value) => /^[a-zA-Z0-9#]*$/.test(value ?? ""),
       "hex color only contains character or number"
-    ),
+    )
+    .optional(),
 });

@@ -1,17 +1,20 @@
-import { db } from "@/lib/prisma";
+import Link from "next/link";
 import { CategoryClient } from "./_components/category-client";
+import { AllCategoryAction } from "@/actions/admin/category-aciton";
+import { Button } from "@/components/ui/button";
 
 const CategoryPage = async () => {
-  const data = await db.category.findMany();
-  const formatedData = data.map((item) => ({
-    id: item.id,
-    name: item.name,
-    color: item.color,
-    img: item.img,
-  }));
+  const data = await AllCategoryAction();
+
   return (
     <div>
-      <CategoryClient data={formatedData} />
+      <div className="flex justify-between items-center pb-5">
+        <h2 className="text-2xl font-bold">Category List</h2>
+        <Link href={"/admin-category/new"}>
+          <Button>Create One</Button>
+        </Link>
+      </div>
+      <CategoryClient data={data} />
     </div>
   );
 };
