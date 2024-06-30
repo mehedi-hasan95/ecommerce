@@ -2,7 +2,7 @@ import * as z from "zod";
 
 export const CategorySchema = z.object({
   name: z.string().min(2, {
-    message: "Name is required",
+    message: "Category name is required",
   }),
   img: z
     .string({ message: "Image is reqired" })
@@ -19,4 +19,13 @@ export const CategorySchema = z.object({
       "hex color only contains character or number"
     )
     .optional(),
+});
+
+export const BrandSchema = z.object({
+  name: z.string().min(2, {
+    message: "Brand name is required",
+  }),
+  img: z
+    .string({ message: "Image is reqired" })
+    .min(1, { message: "Add an Image" }),
 });

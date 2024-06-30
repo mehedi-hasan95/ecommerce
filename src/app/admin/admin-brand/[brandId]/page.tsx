@@ -1,15 +1,15 @@
 import { db } from "@/lib/prisma";
-import { CategoryForm } from "../_components/category-form";
+import { BrandForm } from "../_components/brand-form";
 
-const CategoryId = async ({ params }: { params: { brandId: string } }) => {
-  const category = await db.category.findUnique({
+const BrandId = async ({ params }: { params: { brandId: string } }) => {
+  const brand = await db.brand.findUnique({
     where: { id: params.brandId },
   });
   return (
     <div>
-      <CategoryForm initialData={category} />
+      <BrandForm initialData={brand} />
     </div>
   );
 };
 
-export default CategoryId;
+export default BrandId;

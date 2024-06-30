@@ -1,18 +1,18 @@
 "use client";
 import { DataTable } from "@/components/custom/data-table";
-import { CategoryProps, columns } from "./category-columns";
+import { BrandProps, BrandColums } from "./brand-columns";
 import { useTransition } from "react";
-import { BulkDeleteCategoryAction } from "@/actions/admin/category-aciton";
 import { toast } from "sonner";
+import { BulkDeleteBrandAction } from "@/actions/admin/brand-aciton";
 
 interface Props {
-  data: CategoryProps[];
+  data: BrandProps[];
 }
-export const CategoryClient = ({ data }: Props) => {
+export const BrandClient = ({ data }: Props) => {
   const [isPending, startTransition] = useTransition();
   const deleteData = (ids: string[]) => {
     startTransition(() => {
-      BulkDeleteCategoryAction(ids).then((data) => {
+      BulkDeleteBrandAction(ids).then((data) => {
         if (data.success) {
           toast(data.success);
         } else {
@@ -24,7 +24,7 @@ export const CategoryClient = ({ data }: Props) => {
   return (
     <div>
       <DataTable
-        columns={columns}
+        columns={BrandColums}
         data={data}
         onDelete={(row) => {
           const ids = row.map((r) => r.original.id);

@@ -5,18 +5,18 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { ChevronsUpDown } from "lucide-react";
 import Image from "next/image";
-import { CategoryCell } from "./category-cell";
+import { BrandCell } from "./brand-cell";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type CategoryProps = {
+export type BrandProps = {
   id: string;
   name: string;
-  color: string | null;
   img: string;
+  createdAt: string;
 };
 
-export const columns: ColumnDef<CategoryProps>[] = [
+export const BrandColums: ColumnDef<BrandProps>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -53,30 +53,6 @@ export const columns: ColumnDef<CategoryProps>[] = [
     },
   },
   {
-    accessorKey: "color",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="p-0"
-        >
-          Color
-          <ChevronsUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="flex items-center gap-x-2">
-        {row.original.color ? row.original.color : "No BG"}
-        <div
-          className="h-6 w-6 rounded-full"
-          style={{ backgroundColor: row.original.color || "#000" }}
-        />
-      </div>
-    ),
-  },
-  {
     accessorKey: "img",
     header: "Img",
     cell: ({ row }) => (
@@ -86,7 +62,22 @@ export const columns: ColumnDef<CategoryProps>[] = [
     ),
   },
   {
+    accessorKey: "createdAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="p-0"
+        >
+          CreatedAt
+          <ChevronsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
     accessorKey: "Action",
-    cell: ({ row }) => <CategoryCell data={row.original} />,
+    cell: ({ row }) => <BrandCell data={row.original} />,
   },
 ];

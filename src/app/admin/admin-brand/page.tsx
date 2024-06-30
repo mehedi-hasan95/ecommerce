@@ -1,22 +1,32 @@
 import Link from "next/link";
-import { CategoryClient } from "./_components/category-client";
-import { AllCategoryAction } from "@/actions/admin/category-aciton";
+import { BrandClient } from "./_components/brand-client";
 import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
+import { db } from "@/lib/prisma";
 
-const CategoryPage = async () => {
-  const data = await AllCategoryAction();
-
+const BrandPage = async () => {
+  const data = await db.brand.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  const modifyData = data.map((item) => ({
+    id: item.id,
+    name: item.name,
+    img: item.img,
+    createdAt: format(item.createdAt, "MMMM do, yyyy"),
+  }));
   return (
     <div>
       <div className="flex justify-between items-center pb-5">
-        <h2 className="text-2xl font-bold">Category List</h2>
-        <Link href={"/admin/admin-category/new"}>
+        <h2 className="text-2xl font-bold">Brand List</h2>
+        <Link href={"/admin/admin-brand/new"}>
           <Button>Create One</Button>
         </Link>
       </div>
-      <CategoryClient data={data} />
+      <BrandClient data={modifyData} />
     </div>
   );
 };
 
-export default CategoryPage;
+export default BrandPage;

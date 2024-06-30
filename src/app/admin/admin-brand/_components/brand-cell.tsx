@@ -9,13 +9,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CategoryProps } from "./category-columns";
+import { BrandProps } from "./brand-columns";
 import Link from "next/link";
 
 interface Props {
-  data: CategoryProps;
+  data: BrandProps;
 }
-export const CategoryCell = ({ data }: Props) => {
+export const BrandCell = ({ data }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,7 +29,7 @@ export const CategoryCell = ({ data }: Props) => {
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link
-            href={`/admin/admin-category/${data.id}`}
+            href={`/admin/admin-brand/${data.id}`}
             className="cursor-pointer"
           >
             {data.name}
