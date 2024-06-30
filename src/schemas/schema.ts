@@ -9,12 +9,13 @@ export const CategorySchema = z.object({
     .min(1, { message: "Add an Image" }),
   color: z
     .string()
-    .min(3, {
-      message: "hex color sould be at lease 3 characters",
+    .min(4, {
+      message: "hex color sould be at lease 4 characters",
     })
-    .max(6, "hex color sould be less than 6 characters")
+    .max(7, "hex color sould be less than 7 characters")
+    .regex(/^#/, { message: "String must be a valid hex code" })
     .refine(
-      (value) => /^[a-zA-Z0-9]*$/.test(value ?? ""),
+      (value) => /^[a-zA-Z0-9#]*$/.test(value ?? ""),
       "hex color only contains character or number"
     ),
 });

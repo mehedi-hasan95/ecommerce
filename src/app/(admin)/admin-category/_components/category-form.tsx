@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,6 +25,7 @@ import {
 import { Category } from "@prisma/client";
 import { InputForm } from "@/components/custom/input-form";
 import { UpdateButton } from "@/components/loader/loader-icon";
+import { Input } from "@/components/ui/input";
 
 interface Props {
   initialData: Category | null;
@@ -96,15 +98,25 @@ export const CategoryForm = ({ initialData }: Props) => {
             name="name"
             disabled={isPending}
             label="Category Name"
-            placeholder="e. g. Fish"
+            placeholder="e.g. Fish"
           />
-          <InputForm
-            form={form}
+          <FormField
+            control={form.control}
             name="color"
-            disabled={isPending}
-            label="Category Color"
-            placeholder="e. g. #ededed"
-            message="Input hex color"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Color</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="e.g. #ededed"
+                    {...field}
+                    style={{ color: field.value }}
+                  />
+                </FormControl>
+                <FormDescription>Input your hex code.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
           />
           <FormField
             control={form.control}
