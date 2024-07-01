@@ -16,6 +16,7 @@ const config = withUt({
       padding: "2rem",
       screens: {
         "2xl": "1400px",
+        "3xl": "1710px",
       },
     },
     extend: {
@@ -27,6 +28,8 @@ const config = withUt({
         foreground: "hsl(var(--foreground))",
         themeOne: "#EBFAEB",
         themeTwo: "#27AE60",
+        dark_orange: "#FF5C00",
+        custom_gray: "#333333",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

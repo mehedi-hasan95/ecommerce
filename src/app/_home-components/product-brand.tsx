@@ -15,6 +15,7 @@ interface Props {
 }
 export const ProductBrand = async ({ brands }: Props) => {
   const data = await brands;
+
   return (
     <div className="relative max-w-screen-2xl mx-auto px-6 py-10 md:py-12 lg:py-16">
       <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold">
@@ -36,6 +37,7 @@ export const ProductBrand = async ({ brands }: Props) => {
                         alt={item.name}
                         height={100}
                         width={100}
+                        style={{ height: "auto", width: "auto" }}
                       />
                       <p>{item.name}</p>
                     </div>
