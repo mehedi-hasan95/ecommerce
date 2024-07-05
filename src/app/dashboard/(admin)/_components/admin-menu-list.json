@@ -2,11 +2,11 @@
   {
     "id": 1,
     "name": "Admin Category",
-    "url": "/admin/admin-category"
+    "url": "/dashboard/admin-category"
   },
   {
     "id": 2,
     "name": "Admin Brand",
-    "url": "/admin/admin-brand"
+    "url": "/dashboard/admin-brand"
   }
 ]

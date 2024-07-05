@@ -9,31 +9,165 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model User {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  fullname  String
-  email     String   @unique
-  clerkId   String   @unique
-  role      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fullname      String
+  email         String          @unique
+  clerkId       String          @unique
+  role          String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  Ratings       Ratings[]
+  AddToCart     AddToCart[]
+  AddToWishList AddToWishList[]
+  Order         Order[]
 }
 
 model Category {
-  id    String  @id @default(uuid())
-  name  String
-  img   String
-  color String?
+  id       String     @id @default(uuid())
+  name     String
+  img      String
+  color    String?
+  Products Products[]
 }
 
 model Brand {
-  id        String   @id @default(uuid())
+  id        String     @id @default(uuid())
   name      String
   img       String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Products  Products[]
+}
+
+enum Offer {
+  BUY_ONE_GET_ONE
+  SPECIAL_OFFERS
+}
+
+model Products {
+  id            String          @id @default(cuid())
+  title         String
+  desc          String          @db.Text
+  image         ProductImage[]
+  basePrice     Int?
+  price         Int
+  quantity      Int
+  sale          Int             @default(0)
+  offer         Offer?
+  ratings       Ratings[]
+  addToCart     AddToCart[]
+  categoryId    String
+  brandId       String
+  sellerId      String
+  category      Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  brand         Brand           @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  addToWishList AddToWishList[]
+  order         Order[]
+
+  @@index([categoryId])
+  @@index([brandId])
+}
+
+model ProductImage {
+  id        String   @id @default(uuid())
+  productId String
+  product   Products @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([productId])
+}
+
+model Ratings {
+  id        String   @id @default(uuid())
+  ratings   Int
+  productId String
+  product   Products @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+  @@index([userId])
+}
+
+model AddToCart {
+  id        String   @id @default(uuid())
+  title     String
+  image     String
+  quantity  Int
+  productId String
+  product   Products @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  offer     Offer?
+  price     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+  @@index([userId])
+}
+
+model AddToWishList {
+  id        String   @id @default(uuid())
+  title     String
+  image     String
+  productId String
+  price     Int
+  product   Products @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  offer     Offer?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+  @@index([userId])
+}
+
+enum OrderStatus {
+  IN_PROGRESS
+  ON_THE_WAY
+  DELIVERED
+}
+
+model Order {
+  id        String      @id @default(uuid())
+  title     String
+  img       String?
+  cartId    String      @unique
+  quantity  Int
+  productId String
+  userId    String
+  offer     Offer?
+  price     Int
+  paymentId String?
+  paid      Boolean     @default(false)
+  product   Products    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status    OrderStatus @default(IN_PROGRESS)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@index([productId])
+  @@index([userId])
+}
+
+model StripeCustomer {
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  stripeCustomerId String   @unique
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }

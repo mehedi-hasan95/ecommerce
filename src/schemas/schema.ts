@@ -1,3 +1,4 @@
+import { Offer } from "@prisma/client";
 import * as z from "zod";
 
 export const CategorySchema = z.object({
@@ -28,4 +29,16 @@ export const BrandSchema = z.object({
   img: z
     .string({ message: "Image is reqired" })
     .min(1, { message: "Add an Image" }),
+});
+
+export const ProductsSchema = z.object({
+  title: z.string().min(2, { message: "Product name is required" }),
+  desc: z.string().min(2, { message: "Description is required" }),
+  basePrice: z.coerce.number({ message: "Base price is optional" }).optional(),
+  price: z.coerce.number({ message: "Price is required" }),
+  quantity: z.coerce.number({ message: "Quantity is required" }),
+  offer: z.enum([Offer.BUY_ONE_GET_ONE, Offer.SPECIAL_OFFERS]).optional(),
+  categoryId: z.string({ message: "Please select a category" }),
+  brandId: z.string({ message: "Please select a Brand" }),
+  image: z.object({ url: z.string() }).array(),
 });

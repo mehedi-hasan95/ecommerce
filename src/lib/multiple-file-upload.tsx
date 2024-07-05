@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 
-interface FileUploadProps {
+interface MultipleFileUploadProps {
   onChange: (url?: string) => void;
   endpoint: keyof typeof ourFileRouter;
   value?: string[];
@@ -15,13 +15,13 @@ interface FileUploadProps {
   onRemove: (value: string) => void;
 }
 
-export const FileUpload = ({
+export const MultipleFileUpload = ({
   endpoint,
   onChange,
   value,
   disabled,
   onRemove,
-}: FileUploadProps) => {
+}: MultipleFileUploadProps) => {
   return (
     <>
       <div className="mb-4 flex items-center gap-4">
@@ -54,7 +54,8 @@ export const FileUpload = ({
         disabled={disabled}
         endpoint={endpoint}
         onClientUploadComplete={(res) => {
-          onChange(res?.[0].url);
+          console.log(res);
+          onChange(res as any);
         }}
         onUploadError={(error: Error) => {
           toast.error(`${error?.message}`);

@@ -29,7 +29,7 @@ export const BrandCell = ({ data }: Props) => {
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link
-            href={`/admin/admin-brand/${data.id}`}
+            href={`/dashboard/admin-brand/${data.id}`}
             className="cursor-pointer"
           >
             {data.name}

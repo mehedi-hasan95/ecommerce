@@ -29,7 +29,7 @@ export const CategoryCell = ({ data }: Props) => {
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link
-            href={`/admin/admin-category/${data.id}`}
+            href={`/dashboard/admin-category/${data.id}`}
             className="cursor-pointer"
           >
             {data.name}

@@ -56,7 +56,7 @@ export const BulkDeleteBrandAction = async (ids: string[]) => {
       },
     });
     revalidatePath("/");
-    return { success: "Brand Update Successfully" };
+    return { success: "Brand Delete Successfully" };
   } catch (error) {
     return { error: "Something went wrong" };
   }

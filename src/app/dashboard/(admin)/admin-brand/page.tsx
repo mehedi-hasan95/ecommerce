@@ -20,7 +20,7 @@ const BrandPage = async () => {
     <div>
       <div className="flex justify-between items-center pb-5">
         <h2 className="text-2xl font-bold">Brand List</h2>
-        <Link href={"/admin/admin-brand/new"}>
+        <Link href={"/dashboard/admin-brand/new"}>
           <Button>Create One</Button>
         </Link>
       </div>
