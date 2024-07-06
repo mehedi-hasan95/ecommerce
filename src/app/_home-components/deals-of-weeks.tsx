@@ -8,11 +8,14 @@ import {
   CarouselProgress,
 } from "@/components/ui/carousel";
 import { SingleProduct } from "./single-product";
-export const DealsOfWeeks = () => {
+import { AllProductsAction } from "@/actions/seller/product-action";
+
+export const DealsOfWeeks = async () => {
+  const products = await AllProductsAction();
   return (
     <div className="relative max-w-screen-2xl mx-auto px-6 py-10 md:py-12 lg:py-16">
       <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold">
-        Search by Brand
+        Deals of Week
       </h2>
       <Carousel className="w-full pt-8">
         <CarouselContent>
@@ -20,7 +23,9 @@ export const DealsOfWeeks = () => {
             <div className="p-1">
               <Card>
                 <CardContent className="p-0">
-                  <SingleProduct />
+                  {products.map((product) => (
+                    <SingleProduct key={product.id} data={product} />
+                  ))}
                 </CardContent>
               </Card>
             </div>
