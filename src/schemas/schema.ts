@@ -42,3 +42,13 @@ export const ProductsSchema = z.object({
   brandId: z.string({ message: "Please select a Brand" }),
   image: z.object({ url: z.string() }).array(),
 });
+
+export const AddToCartSchema = z.object({
+  productId: z.string().min(2, {
+    message: "productId Name is required",
+  }),
+  quantity: z.coerce.number().min(1, {
+    message: "Product quantity is required",
+  }),
+  offer: z.enum([Offer.BUY_ONE_GET_ONE, Offer.SPECIAL_OFFERS]).optional(),
+});

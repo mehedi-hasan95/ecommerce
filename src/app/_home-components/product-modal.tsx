@@ -9,15 +9,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { AddToWishList, ProductImage, Products } from "@prisma/client";
+import {
+  AddToCart,
+  AddToWishList,
+  ProductImage,
+  Products,
+} from "@prisma/client";
 import { Eye, Minus, Plus } from "lucide-react";
 import Link from "next/link";
 import { ImageTabs } from "./image-tabs";
 import { FormatPrice } from "@/lib/format-price";
 import { cn } from "@/lib/utils";
+import { AddToCartButton } from "./add-to-cart-button";
 
 interface ProductModalProps {
-  products: Products;
+  products: Products & { addToCart: AddToCart[] };
   onCart: (value: string) => void;
   children: React.ReactNode;
   quantity?: any;
@@ -87,7 +93,7 @@ export const ProductModal = ({
               </div>
 
               {/* Add to Cart  */}
-              <Button
+              {/* <Button
                 onClick={() => onCart(products.id)}
                 className={cn(
                   "text-sm border border-theme text-whiteTwo text-themeTwo rounded-full px-7 py-2 hover:bg-themeTwo hover:text-white"
@@ -95,7 +101,8 @@ export const ProductModal = ({
                 variant={"ghost"}
               >
                 Add to Cart
-              </Button>
+              </Button> */}
+              <AddToCartButton data={products} quantity={quantity} />
               {/* To Do  */}
               {/* <div className="py-5">
                 <WishListButton item={products as any} wish={wish} />

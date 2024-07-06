@@ -3,18 +3,31 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FormatPrice } from "@/lib/format-price";
 import { cn } from "@/lib/utils";
-import { AddToWishList, ProductImage, Products } from "@prisma/client";
+import {
+  AddToCart,
+  AddToWishList,
+  ProductImage,
+  Products,
+} from "@prisma/client";
 import { Minus, Plus, Star } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { ProductModal } from "./product-modal";
 import { WishListButton } from "./wishlist-button";
+import { AddToCartAction } from "@/actions/user/add-to-cart-action";
+import { toast } from "sonner";
+import { useAuth } from "@clerk/nextjs";
+import { AddToCartButton } from "./add-to-cart-button";
 
 interface Props {
-  data: Products & { image: ProductImage[] };
-  likes: AddToWishList[];
+  data: Products & {
+    image: ProductImage[];
+    addToWishList: AddToWishList[];
+    addToCart: AddToCart[];
+  };
 }
-export const SingleProduct = ({ data, likes }: Props) => {
+export const SingleProduct = ({ data }: Props) => {
+  const { userId } = useAuth();
   const [quantity, setQuantity] = useState<number>(1);
 
   const increaseQuantity = () => {
@@ -26,6 +39,20 @@ export const SingleProduct = ({ data, likes }: Props) => {
       setQuantity(quantity - 1);
     }
   };
+
+  // const addCart = async () => {
+  //   const values = {
+  //     productId: data.id,
+  //     quantity,
+  //     offer: data.offer || undefined,
+  //   };
+  //   AddToCartAction(values).then((data) => {
+  //     if (data?.error) {
+  //       toast.error(data.error);
+  //     }
+  //   });
+  // };
+
   return (
     <div className="relative">
       <div className="relative group flex justify-center h-[250px] bg-slate-50">
@@ -86,7 +113,7 @@ export const SingleProduct = ({ data, likes }: Props) => {
       <div className="absolute top-5 left-5 cursor-pointer">
         <WishListButton
           postId={data.id}
-          likes={likes.map((item) => item.userId)}
+          likes={data?.addToWishList?.map((item) => item.userId)}
         />
       </div>
       <div className="flex justify-center py-5 flex-col items-center space-y-2">
@@ -107,14 +134,21 @@ export const SingleProduct = ({ data, likes }: Props) => {
             {FormatPrice(data?.basePrice || 0)}
           </span>
         </div>
-        <Button
-          className={cn(
-            "text-sm border border-theme text-whiteTwo text-themeTwo rounded-full px-7 py-2 hover:bg-themeTwo hover:text-white"
-          )}
-          variant={"ghost"}
-        >
-          Add to Cart
-        </Button>
+        {/* <form action={addCart}>
+          <Button
+            className={cn(
+              "text-sm border border-theme text-whiteTwo text-themeTwo rounded-full px-7 py-2 hover:bg-themeTwo hover:text-white"
+            )}
+            variant={"ghost"}
+          >
+            {data.addToCart.some(
+              (item) => item.productId === data.id && item.userId === userId
+            )
+              ? "Added"
+              : "Add to Cart"}
+          </Button>
+        </form> */}
+        <AddToCartButton data={data} quantity={quantity} />
       </div>
     </div>
   );

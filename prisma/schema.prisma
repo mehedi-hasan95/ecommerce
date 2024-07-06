@@ -103,15 +103,12 @@ model Ratings {
 
 model AddToCart {
   id        String   @id @default(uuid())
-  title     String
-  image     String
   quantity  Int
   productId String
   product   Products @relation(fields: [productId], references: [id], onDelete: Cascade)
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   offer     Offer?
-  price     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

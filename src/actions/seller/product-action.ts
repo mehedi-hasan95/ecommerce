@@ -86,7 +86,7 @@ export const BulkDeleteProductAction = async (ids: string[]) => {
 export const AllProductsAction = async () => {
   const data = await db.products.findMany({
     orderBy: { createdAt: "desc" },
-    include: { image: true, addToWishList: true },
+    include: { image: true, addToWishList: true, addToCart: true },
   });
   return data;
 };

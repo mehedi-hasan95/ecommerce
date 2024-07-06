@@ -27,10 +27,7 @@ export const DealsOfWeeks = async () => {
               <div className="p-1">
                 <Card>
                   <CardContent className="p-0">
-                    <SingleProduct
-                      data={product}
-                      likes={product.addToWishList}
-                    />
+                    <SingleProduct data={product} />
                   </CardContent>
                 </Card>
               </div>

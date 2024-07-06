@@ -1,6 +1,7 @@
 "use server";
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 
 export const switchLikes = async (productId: string) => {
   const { userId } = auth();
@@ -26,7 +27,19 @@ export const switchLikes = async (productId: string) => {
         },
       });
     }
+    revalidatePath("/");
   } catch (error) {
     return { error: "Something went wrong" };
   }
+};
+
+export const WishListCount = async () => {
+  const { userId } = auth();
+  if (!userId) return null;
+  const data = await db.addToWishList.count({
+    where: {
+      userId,
+    },
+  });
+  return data;
 };
