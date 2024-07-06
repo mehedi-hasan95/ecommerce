@@ -19,17 +19,23 @@ export const DealsOfWeeks = async () => {
       </h2>
       <Carousel className="w-full pt-8">
         <CarouselContent>
-          <CarouselItem className="basis-1/2 md:basis-1/3 lg:basis-1/5">
-            <div className="p-1">
-              <Card>
-                <CardContent className="p-0">
-                  {products.map((product) => (
-                    <SingleProduct key={product.id} data={product} />
-                  ))}
-                </CardContent>
-              </Card>
-            </div>
-          </CarouselItem>
+          {products.map((product) => (
+            <CarouselItem
+              className="basis-1/2 md:basis-1/3 lg:basis-1/5"
+              key={product.id}
+            >
+              <div className="p-1">
+                <Card>
+                  <CardContent className="p-0">
+                    <SingleProduct
+                      data={product}
+                      likes={product.addToWishList}
+                    />
+                  </CardContent>
+                </Card>
+              </div>
+            </CarouselItem>
+          ))}
         </CarouselContent>
         <div className="absolute -top-4 right-10">
           <CarouselPrevious className="-left-6" />

@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FormatPrice } from "@/lib/format-price";
 import { cn } from "@/lib/utils";
-import { ProductImage, Products } from "@prisma/client";
+import { AddToWishList, ProductImage, Products } from "@prisma/client";
 import { Minus, Plus, Star } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -12,8 +12,9 @@ import { WishListButton } from "./wishlist-button";
 
 interface Props {
   data: Products & { image: ProductImage[] };
+  likes: AddToWishList[];
 }
-export const SingleProduct = ({ data }: Props) => {
+export const SingleProduct = ({ data, likes }: Props) => {
   const [quantity, setQuantity] = useState<number>(1);
 
   const increaseQuantity = () => {
@@ -70,15 +71,23 @@ export const SingleProduct = ({ data }: Props) => {
       </div>
       <Badge className="top-5 right-5 absolute">
         -
-        {(
-          (((data?.basePrice || 0) - data.price) / (data?.basePrice || 0)) *
+        {data.basePrice ? (
+          <>
+            {(((data?.basePrice - data.price) / data?.basePrice) * 100).toFixed(
+              0
+            )}{" "}
+          </>
+        ) : (
           100
-        ).toFixed(0)}{" "}
+        )}
         %
       </Badge>
       {/* Wishlist button  */}
       <div className="absolute top-5 left-5 cursor-pointer">
-        <WishListButton />
+        <WishListButton
+          postId={data.id}
+          likes={likes.map((item) => item.userId)}
+        />
       </div>
       <div className="flex justify-center py-5 flex-col items-center space-y-2">
         <div className="flex gap-x-2 items-center">
