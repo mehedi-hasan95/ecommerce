@@ -26,59 +26,87 @@ import {
 } from "@/components/ui/select";
 import { MultipleFileUpload } from "@/lib/multiple-file-upload";
 import { useTransition } from "react";
-import { CreateProductAction } from "@/actions/seller/product-action";
+import {
+  CreateProductAction,
+  UpdateProductAction,
+} from "@/actions/seller/product-action";
 import { toast } from "sonner";
 import { UpdateButton } from "@/components/loader/loader-icon";
 import { useRouter } from "next/navigation";
+import { ProductImage, Products } from "@prisma/client";
 
 interface Props {
   categories: { label: string; value: string }[];
   brands: { label: string; value: string }[];
+  initialData: (Products & { image: ProductImage[] }) | null;
 }
-export const ProductsForm = ({ categories, brands }: Props) => {
+export const ProductsForm = ({ categories, brands, initialData }: Props) => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const title = initialData ? "Update Product" : "Create Product";
+  const action = initialData ? "Update" : "Create";
+  const afterAction = initialData ? "Updating" : "Creating";
   // 1. Define your form.
   const form = useForm<z.infer<typeof ProductsSchema>>({
     resolver: zodResolver(ProductsSchema),
     defaultValues: {
-      title: "",
-      desc: "",
-      basePrice: undefined,
-      price: undefined,
-      quantity: undefined,
-      brandId: "",
-      categoryId: "",
-      offer: undefined,
-      image: [],
+      title: initialData?.title || "",
+      desc: initialData?.desc || "",
+      basePrice: initialData?.basePrice || undefined,
+      price: initialData?.price || undefined,
+      quantity: initialData?.quantity || undefined,
+      brandId: initialData?.brandId || "",
+      categoryId: initialData?.categoryId || "",
+      offer: initialData?.offer || undefined,
+      image: initialData?.image || [],
     },
   });
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof ProductsSchema>) {
     startTransition(() => {
-      CreateProductAction(values).then((data) => {
-        if (data.success) {
-          toast.success(data.success, {
-            action: {
-              label: "Success",
-              onClick: () => console.log("Success"),
-            },
+      initialData
+        ? UpdateProductAction(values, initialData?.id).then((data) => {
+            if (data.success) {
+              toast.success(data.success, {
+                action: {
+                  label: "Success",
+                  onClick: () => console.log("Success"),
+                },
+              });
+              router.push("/dashboard/products");
+            } else {
+              toast.error(data.error, {
+                action: {
+                  label: "Error",
+                  onClick: () => console.log("Error"),
+                },
+              });
+            }
+          })
+        : CreateProductAction(values).then((data) => {
+            if (data.success) {
+              toast.success(data.success, {
+                action: {
+                  label: "Success",
+                  onClick: () => console.log("Success"),
+                },
+              });
+              router.push("/dashboard/products");
+            } else {
+              toast.error(data.error, {
+                action: {
+                  label: "Error",
+                  onClick: () => console.log("Error"),
+                },
+              });
+            }
           });
-          router.push("/dashboard/products");
-        } else {
-          toast.error(data.error, {
-            action: {
-              label: "Error",
-              onClick: () => console.log("Error"),
-            },
-          });
-        }
-      });
     });
   }
   return (
     <div className="pb-10">
+      <h2 className="text-2xl font-bold py-5">{title}</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <InputForm
@@ -225,9 +253,9 @@ export const ProductsForm = ({ categories, brands }: Props) => {
             )}
           />
           {isPending ? (
-            <UpdateButton>Updating</UpdateButton>
+            <UpdateButton>{afterAction}</UpdateButton>
           ) : (
-            <Button type="submit">Submit</Button>
+            <Button type="submit">{action}</Button>
           )}
         </form>
       </Form>
