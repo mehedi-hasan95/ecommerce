@@ -2,7 +2,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FormatPrice } from "@/lib/format-price";
-import { cn } from "@/lib/utils";
 import {
   AddToCart,
   AddToWishList,
@@ -14,8 +13,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { ProductModal } from "./product-modal";
 import { WishListButton } from "./wishlist-button";
-import { AddToCartAction } from "@/actions/user/add-to-cart-action";
-import { toast } from "sonner";
 import { useAuth } from "@clerk/nextjs";
 import { AddToCartButton } from "./add-to-cart-button";
 
@@ -39,19 +36,6 @@ export const SingleProduct = ({ data }: Props) => {
       setQuantity(quantity - 1);
     }
   };
-
-  // const addCart = async () => {
-  //   const values = {
-  //     productId: data.id,
-  //     quantity,
-  //     offer: data.offer || undefined,
-  //   };
-  //   AddToCartAction(values).then((data) => {
-  //     if (data?.error) {
-  //       toast.error(data.error);
-  //     }
-  //   });
-  // };
 
   return (
     <div className="relative">
@@ -134,20 +118,6 @@ export const SingleProduct = ({ data }: Props) => {
             {FormatPrice(data?.basePrice || 0)}
           </span>
         </div>
-        {/* <form action={addCart}>
-          <Button
-            className={cn(
-              "text-sm border border-theme text-whiteTwo text-themeTwo rounded-full px-7 py-2 hover:bg-themeTwo hover:text-white"
-            )}
-            variant={"ghost"}
-          >
-            {data.addToCart.some(
-              (item) => item.productId === data.id && item.userId === userId
-            )
-              ? "Added"
-              : "Add to Cart"}
-          </Button>
-        </form> */}
         <AddToCartButton data={data} quantity={quantity} />
       </div>
     </div>

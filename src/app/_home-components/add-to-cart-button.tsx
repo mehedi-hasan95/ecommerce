@@ -29,18 +29,23 @@ export const AddToCartButton = ({ data, quantity }: Props) => {
       });
     });
   };
+  const inCart = () => {
+    toast.error("Already in Cart");
+  };
   return (
     <>
       {data.addToCart.some(
         (item) => item.productId === data.id && item.userId === userId
       ) ? (
-        <div
+        <Button
+          onClick={inCart}
           className={cn(
-            "text-sm border border-theme text-whiteTwo text-themeTwo rounded-full px-7 py-2 hover:bg-themeTwo hover:text-white max-w-max cursor-not-allowed"
+            "text-sm border border-theme text-whiteTwo text-themeTwo rounded-full px-7 py-2 hover:bg-themeTwo hover:text-white"
           )}
+          variant={"ghost"}
         >
           Added
-        </div>
+        </Button>
       ) : (
         <Button
           onClick={addCart}

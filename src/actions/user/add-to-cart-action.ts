@@ -23,3 +23,20 @@ export const AddToCartAction = async (
     return { error: "Something went wrong" };
   }
 };
+
+export const AllCartAction = async () => {
+  const { userId } = auth();
+  if (!userId) return null;
+  const data = await db.addToCart.findMany({
+    where: {
+      userId,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      product: true,
+    },
+  });
+  return data;
+};

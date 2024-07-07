@@ -82,15 +82,6 @@ export const BulkDeleteProductAction = async (ids: string[]) => {
   }
 };
 
-// Find Many
-export const AllProductsAction = async () => {
-  const data = await db.products.findMany({
-    orderBy: { createdAt: "desc" },
-    include: { image: true, addToWishList: true, addToCart: true },
-  });
-  return data;
-};
-
 // Update Product
 export const UpdateProductAction = async (
   values: z.infer<typeof ProductsSchema>,
@@ -159,4 +150,29 @@ export const UpdateProductAction = async (
   } catch (error) {
     return { error: "Something went wrong" };
   }
+};
+
+// Find Many
+export const AllProductsAction = async () => {
+  const data = await db.products.findMany({
+    orderBy: { createdAt: "desc" },
+    include: { image: true, addToWishList: true, addToCart: true },
+  });
+  return data;
+};
+
+// Deals of Weeks
+export const WeeksProductsAction = async () => {
+  const expectedDaysAgo = new Date();
+  expectedDaysAgo.setDate(expectedDaysAgo.getDate() - 40);
+  const data = await db.products.findMany({
+    where: {
+      createdAt: {
+        gte: expectedDaysAgo,
+      },
+    },
+    orderBy: { createdAt: "desc" },
+    include: { image: true, addToWishList: true, addToCart: true },
+  });
+  return data;
 };

@@ -8,10 +8,10 @@ import {
   CarouselProgress,
 } from "@/components/ui/carousel";
 import { SingleProduct } from "./single-product";
-import { AllProductsAction } from "@/actions/seller/product-action";
+import { WeeksProductsAction } from "@/actions/seller/product-action";
 
 export const DealsOfWeeks = async () => {
-  const products = await AllProductsAction();
+  const products = await WeeksProductsAction();
   return (
     <div className="relative max-w-screen-2xl mx-auto px-6 py-10 md:py-12 lg:py-16">
       <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold">
