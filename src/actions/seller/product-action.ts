@@ -163,14 +163,8 @@ export const AllProductsAction = async () => {
 
 // Deals of Weeks
 export const WeeksProductsAction = async () => {
-  const expectedDaysAgo = new Date();
-  expectedDaysAgo.setDate(expectedDaysAgo.getDate() - 40);
   const data = await db.products.findMany({
-    where: {
-      createdAt: {
-        gte: expectedDaysAgo,
-      },
-    },
+    take: 15,
     orderBy: { createdAt: "desc" },
     include: { image: true, addToWishList: true, addToCart: true },
   });

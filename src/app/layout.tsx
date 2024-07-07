@@ -5,6 +5,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { PrimaryNav } from "@/components/common/navmenu/primery-nav/primary-nav";
 import { SeconderyNav } from "@/components/common/navmenu/secondery-nav/secondery-nav";
+import { Footer } from "@/components/common/footer/footer";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -31,6 +32,7 @@ export default function RootLayout({
             <SeconderyNav />
           </div>
           {children}
+          <Footer />
           <Toaster />
         </body>
       </ClerkProvider>

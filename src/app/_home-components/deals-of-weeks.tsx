@@ -13,7 +13,7 @@ import { WeeksProductsAction } from "@/actions/seller/product-action";
 export const DealsOfWeeks = async () => {
   const products = await WeeksProductsAction();
   return (
-    <div className="relative max-w-screen-2xl mx-auto px-6 py-10 md:py-12 lg:py-16">
+    <div className="relative max-w-screen-2xl mx-auto px-6 pt-4 md:pt-6 lg:pt-10">
       <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold">
         Deals of Week
       </h2>

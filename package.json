@@ -28,7 +28,6 @@
     "clsx": "^2.1.1",
     "cmdk": "^0.2.0",
     "date-fns": "^3.6.0",
-    "ecommerce": ".",
     "embla-carousel-autoplay": "^8.1.5",
     "embla-carousel-react": "^8.1.5",
     "framer-motion": "^11.2.12",
