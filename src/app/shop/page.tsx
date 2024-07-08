@@ -1,11 +1,18 @@
 import { AllProductsAction } from "@/actions/seller/product-action";
 import { ShopClient } from "./_components/shop-client";
+import { AllCategoryAction } from "@/actions/admin/category-aciton";
 
-const ShopPage = async () => {
-  const products = await AllProductsAction();
+interface Props {
+  searchParams: {
+    sort: string;
+  };
+}
+const ShopPage = async ({ searchParams }: Props) => {
+  const products = await AllProductsAction({ ...searchParams });
+  const categories = await AllCategoryAction();
   return (
     <div className="max-w-screen-2xl mx-auto px-6 py-8">
-      <ShopClient data={products} />
+      <ShopClient data={products} categories={categories} />
     </div>
   );
 };

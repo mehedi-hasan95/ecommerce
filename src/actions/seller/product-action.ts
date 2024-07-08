@@ -153,9 +153,12 @@ export const UpdateProductAction = async (
 };
 
 // Find Many
-export const AllProductsAction = async () => {
+type SearchParams = {
+  sort?: string;
+};
+export const AllProductsAction = async ({ sort }: SearchParams) => {
   const data = await db.products.findMany({
-    orderBy: { createdAt: "desc" },
+    orderBy: { price: sort as any },
     include: { image: true, addToWishList: true, addToCart: true },
   });
   return data;

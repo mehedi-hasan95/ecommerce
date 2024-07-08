@@ -1,4 +1,10 @@
 "use client";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { SingleProduct } from "@/app/_home-components/single-product";
 import {
   DropdownMenu,
@@ -10,27 +16,40 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import {
-  AddToCart,
-  AddToWishList,
-  ProductImage,
-  Products,
-} from "@prisma/client";
+import { Category, Products } from "@prisma/client";
 import { ChevronDown } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
+import queryString from "query-string";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Props {
   data: Products[];
+  categories: Category[];
 }
-export const ShopClient = ({ data }: Props) => {
-  console.log(data);
+export const ShopClient = ({ data, categories }: Props) => {
+  const router = useRouter();
+  const pathName = usePathname();
   const SORT_OPTIONS = [
     { name: "None", value: "none" },
     { name: "Price: Low to High", value: "asc" },
-    { name: "Price: High to Low", value: "dsc" },
+    { name: "Price: High to Low", value: "desc" },
   ] as const;
   const [filter, setFilter] = useState({ sort: "none" });
+  const handleSortChange = (sort: string) => {
+    setFilter((prev) => ({ ...prev, sort }));
+
+    const queryParams = sort === "none" ? {} : { sort };
+    const newUrl = queryString.stringifyUrl(
+      {
+        url: pathName,
+        query: queryParams,
+      },
+      { skipNull: true, skipEmptyString: true }
+    );
+
+    router.push(newUrl);
+  };
   return (
     <div>
       <div className="flex justify-between items-center gap-x-10">
@@ -51,9 +70,7 @@ export const ShopClient = ({ data }: Props) => {
                     "text-gray-500": item.value !== filter.sort,
                   })}
                   key={item.value}
-                  onClick={() => {
-                    setFilter((prev) => ({ ...prev, sort: item.value }));
-                  }}
+                  onClick={() => handleSortChange(item.value)}
                 >
                   {item.name}
                 </button>
@@ -65,7 +82,34 @@ export const ShopClient = ({ data }: Props) => {
       <Separator className="my-5" />
       {/* Products  */}
       <div className="grid grid-cols-4 gap-5">
-        <div className="col-span-1">Mehedi</div>
+        <div className="col-span-1">
+          <Accordion type="multiple" className="animate-none">
+            <AccordionItem value="categories">
+              <AccordionTrigger className="py-3 text-sm text-gray-400 hover:text-gray-500">
+                Categories
+              </AccordionTrigger>
+              <AccordionContent className="pt-6 animate-none">
+                <ul className="space-y-4">
+                  {categories.map((item) => (
+                    <li key={item.id} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        id={item.id}
+                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                      />
+                      <label
+                        htmlFor={item.id}
+                        className="ml-3 text-sm text-gray-600 cursor-pointer"
+                      >
+                        {item.name}
+                      </label>
+                    </li>
+                  ))}
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
         <div className="col-span-3">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {data.map((item) => (
