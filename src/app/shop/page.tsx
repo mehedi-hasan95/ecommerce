@@ -6,6 +6,7 @@ interface Props {
   searchParams: {
     sort: string;
     categories: string;
+    price: string;
   };
 }
 const ShopPage = async ({ searchParams }: Props) => {
