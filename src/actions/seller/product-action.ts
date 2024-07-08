@@ -155,11 +155,19 @@ export const UpdateProductAction = async (
 // Find Many
 type SearchParams = {
   sort?: string;
+  categories?: string;
 };
-export const AllProductsAction = async ({ sort }: SearchParams) => {
+export const AllProductsAction = async ({ sort, categories }: SearchParams) => {
+  let dataString = categories;
+  let categoriesArray = dataString?.split(",");
   const data = await db.products.findMany({
     orderBy: { price: sort as any },
     include: { image: true, addToWishList: true, addToCart: true },
+    where: {
+      categoryId: {
+        in: categoriesArray,
+      },
+    },
   });
   return data;
 };

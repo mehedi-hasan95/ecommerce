@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Accordion,
   AccordionContent,
@@ -9,7 +10,6 @@ import { SingleProduct } from "@/app/_home-components/single-product";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -19,14 +19,15 @@ import { cn } from "@/lib/utils";
 import { Category, Products } from "@prisma/client";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
 import queryString from "query-string";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ProductNotFound } from "./product-not-found";
 
 interface Props {
   data: Products[];
   categories: Category[];
 }
+
 export const ShopClient = ({ data, categories }: Props) => {
   const router = useRouter();
   const pathName = usePathname();
@@ -35,11 +36,44 @@ export const ShopClient = ({ data, categories }: Props) => {
     { name: "Price: Low to High", value: "asc" },
     { name: "Price: High to Low", value: "desc" },
   ] as const;
-  const [filter, setFilter] = useState({ sort: "none" });
+
+  const [filter, setFilter] = useState({
+    sort: "none",
+    categories: [] as string[],
+  });
+
   const handleSortChange = (sort: string) => {
     setFilter((prev) => ({ ...prev, sort }));
+    updateUrl({ ...filter, sort });
+  };
 
-    const queryParams = sort === "none" ? {} : { sort };
+  const handleCategoryChange = (categoryId: string) => {
+    setFilter((prev) => {
+      const newCategories = prev.categories.includes(categoryId)
+        ? prev.categories.filter((id) => id !== categoryId)
+        : [...prev.categories, categoryId];
+      return { ...prev, categories: newCategories };
+    });
+
+    updateUrl({
+      ...filter,
+      categories: filter.categories.includes(categoryId)
+        ? filter.categories.filter((id) => id !== categoryId)
+        : [...filter.categories, categoryId],
+    });
+  };
+
+  const updateUrl = (updatedFilter: { sort: string; categories: string[] }) => {
+    const queryParams: { [key: string]: string | string[] } = {};
+
+    if (updatedFilter.sort !== "none") {
+      queryParams.sort = updatedFilter.sort;
+    }
+
+    if (updatedFilter.categories.length > 0) {
+      queryParams.categories = updatedFilter.categories.join(",");
+    }
+    console.log(queryParams);
     const newUrl = queryString.stringifyUrl(
       {
         url: pathName,
@@ -50,6 +84,7 @@ export const ShopClient = ({ data, categories }: Props) => {
 
     router.push(newUrl);
   };
+
   return (
     <div>
       <div className="flex justify-between items-center gap-x-10">
@@ -96,6 +131,8 @@ export const ShopClient = ({ data, categories }: Props) => {
                         type="checkbox"
                         id={item.id}
                         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                        onChange={() => handleCategoryChange(item.id)}
+                        checked={filter.categories.includes(item.id)}
                       />
                       <label
                         htmlFor={item.id}
@@ -111,11 +148,15 @@ export const ShopClient = ({ data, categories }: Props) => {
           </Accordion>
         </div>
         <div className="col-span-3">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {data.map((item) => (
-              <SingleProduct key={item.id} data={item as any} />
-            ))}
-          </div>
+          {data.length ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {data.map((item) => (
+                <SingleProduct key={item.id} data={item as any} />
+              ))}
+            </div>
+          ) : (
+            <ProductNotFound />
+          )}
         </div>
       </div>
     </div>

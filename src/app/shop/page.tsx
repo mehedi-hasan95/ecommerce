@@ -5,6 +5,7 @@ import { AllCategoryAction } from "@/actions/admin/category-aciton";
 interface Props {
   searchParams: {
     sort: string;
+    categories: string;
   };
 }
 const ShopPage = async ({ searchParams }: Props) => {
