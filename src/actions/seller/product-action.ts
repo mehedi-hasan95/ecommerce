@@ -184,6 +184,17 @@ export const AllProductsAction = async ({
   return data;
 };
 
+// Max and min Price
+export const MaxMinPriceAciton = async () => {
+  const data = db.products.aggregate({
+    _max: {
+      price: true,
+    },
+    _min: { price: true },
+  });
+  return data;
+};
+
 // Deals of Weeks
 export const WeeksProductsAction = async () => {
   const data = await db.products.findMany({

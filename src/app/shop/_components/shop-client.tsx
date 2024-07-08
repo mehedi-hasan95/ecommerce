@@ -1,6 +1,6 @@
 "use client";
 
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { RadioGroup } from "@/components/ui/radio-group";
 import {
   Accordion,
   AccordionContent,
@@ -19,19 +19,22 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { Category, Products } from "@prisma/client";
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import queryString from "query-string";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ProductNotFound } from "./product-not-found";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import debounce from "debounce";
 
 interface Props {
   data: Products[];
   categories: Category[];
+  price: any;
 }
 
-export const ShopClient = ({ data, categories }: Props) => {
+export const ShopClient = ({ data, categories, price }: Props) => {
+  console.log(price._max.price);
   const router = useRouter();
   const pathName = usePathname();
   const SORT_OPTIONS = [
@@ -40,12 +43,15 @@ export const ShopClient = ({ data, categories }: Props) => {
     { name: "Price: High to Low", value: "desc" },
   ] as const;
 
-  const DEFAULT_CUSTOM_PRICE = [0, 100] as [number, number];
+  const DEFAULT_CUSTOM_PRICE = [price._min.price, price._max.price] as [
+    number,
+    number
+  ];
   const PRICE_FILTERS = {
     id: "price",
     name: "Price",
     options: [
-      { value: [0, 100], label: "Any price" },
+      { value: [price._min.price, price._max.price], label: "Any price" },
       {
         value: [0, 20],
         label: "Under 20$",
@@ -92,7 +98,7 @@ export const ShopClient = ({ data, categories }: Props) => {
         range,
       },
     }));
-    updateUrl({
+    debouncedUpdateUrl({
       ...filter,
       price: { isCustom, range },
     });
@@ -132,6 +138,8 @@ export const ShopClient = ({ data, categories }: Props) => {
 
     router.push(newUrl);
   };
+
+  const debouncedUpdateUrl = useCallback(debounce(updateUrl, 500), [filter]);
 
   const minPrice = Math.min(filter.price.range[0], filter.price.range[1]);
   const maxPrice = Math.max(filter.price.range[0], filter.price.range[1]);
@@ -275,7 +283,7 @@ export const ShopClient = ({ data, categories }: Props) => {
                               range: [newMin, newMax],
                             },
                           }));
-                          updateUrl({
+                          debouncedUpdateUrl({
                             ...filter,
                             price: { isCustom: true, range: [newMin, newMax] },
                           });
