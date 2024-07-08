@@ -133,6 +133,7 @@ export const CategoryForm = ({ initialData }: Props) => {
                     endpoint="productImage"
                     value={field.value ? [field.value] : []}
                     onChange={(url) => field.onChange(url)}
+                    onRemove={() => field.onChange("")}
                   />
                 </FormControl>
                 <FormMessage />

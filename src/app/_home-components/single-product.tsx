@@ -41,7 +41,13 @@ export const SingleProduct = ({ data }: Props) => {
     <div className="relative">
       <div className="relative group flex justify-center h-[250px] bg-slate-50">
         <div className="flex relative items-center justify-center">
-          <Image src={data.image[0].url} alt="" height={100} width={100} />
+          <Image
+            src={data.image[0].url}
+            alt=""
+            height={200}
+            width={200}
+            style={{ objectFit: "cover" }}
+          />
         </div>
         <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 opacity-0 hover:opacity-100 flex justify-center items-center flex-col">
           <div className="flex gap-2 pb-5 items-center">
