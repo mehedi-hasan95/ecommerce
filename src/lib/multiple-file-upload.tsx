@@ -54,7 +54,6 @@ export const MultipleFileUpload = ({
         disabled={disabled}
         endpoint={endpoint}
         onClientUploadComplete={(res) => {
-          console.log(res);
           onChange(res as any);
         }}
         onUploadError={(error: Error) => {

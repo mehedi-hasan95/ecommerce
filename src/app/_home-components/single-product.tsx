@@ -7,6 +7,7 @@ import {
   AddToWishList,
   ProductImage,
   Products,
+  Ratings,
 } from "@prisma/client";
 import { Minus, Plus, Star } from "lucide-react";
 import Image from "next/image";
@@ -15,12 +16,15 @@ import { ProductModal } from "./product-modal";
 import { WishListButton } from "./wishlist-button";
 import { AddToCartButton } from "./add-to-cart-button";
 import Link from "next/link";
+import StarRating from "./star-rating";
 
 interface Props {
   data: Products & {
     image: ProductImage[];
     addToWishList: AddToWishList[];
     addToCart: AddToCart[];
+    ratings: Ratings[];
+    averageRating: number | null;
   };
 }
 export const SingleProduct = ({ data }: Props) => {
@@ -107,12 +111,8 @@ export const SingleProduct = ({ data }: Props) => {
       </div>
       <div className="flex justify-center py-5 flex-col items-center space-y-2">
         <div className="flex gap-x-2 items-center">
-          <Star className="size-4 fill-yellow-500 text-yellow-500" />
-          <Star className="size-4 fill-yellow-500 text-yellow-500" />
-          <Star className="size-4 fill-yellow-500 text-yellow-500" />
-          <Star className="size-4 fill-yellow-500 text-yellow-500" />
-          <Star className="size-4 fill-yellow-500 text-yellow-500" />
-          <p className="text-sm">(120)</p>
+          <StarRating rating={data?.averageRating || 0} />
+          <p className="text-sm">({data.ratings.length})</p>
         </div>
         <Link
           href={`/shop/${data.id}`}

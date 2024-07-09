@@ -14,7 +14,6 @@ export const ProductsClient = ({ data }: Props) => {
     startTransition(() => {
       BulkDeleteProductAction(ids).then((data) => {
         if (data.success) {
-          console.log("fuck");
           toast(data.success);
         } else {
           toast(data.error);

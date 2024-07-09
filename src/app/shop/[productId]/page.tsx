@@ -1,9 +1,7 @@
 import { SingleProductAction } from "@/actions/seller/product-action";
-import { AddToCartButton } from "@/app/_home-components/add-to-cart-button";
 import { ImageTabs } from "@/app/_home-components/image-tabs";
 import { WishListButton } from "@/app/_home-components/wishlist-button";
 import { FormatPrice } from "@/lib/format-price";
-import Image from "next/image";
 import { ProductTabs } from "./_components/product-tabs";
 import { ProductCartQuantity } from "./_components/product-cart-quantity";
 

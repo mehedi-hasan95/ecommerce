@@ -170,7 +170,12 @@ export const AllProductsAction = async ({
   let priceArray = priceString?.split(",").map(Number);
   const data = await db.products.findMany({
     orderBy: { price: sort as any },
-    include: { image: true, addToWishList: true, addToCart: true },
+    include: {
+      image: true,
+      addToWishList: true,
+      addToCart: true,
+      ratings: true,
+    },
     where: {
       categoryId: {
         in: categoriesArray,
@@ -181,7 +186,17 @@ export const AllProductsAction = async ({
       },
     },
   });
-  return data;
+  return data.map((product) => {
+    const averageRating = product.ratings.length
+      ? product.ratings.reduce((sum, rating) => sum + rating.ratings, 0) /
+        product.ratings.length
+      : null;
+
+    return {
+      ...product,
+      averageRating,
+    };
+  });
 };
 
 // Max and min Price
@@ -200,9 +215,24 @@ export const WeeksProductsAction = async () => {
   const data = await db.products.findMany({
     take: 15,
     orderBy: { createdAt: "desc" },
-    include: { image: true, addToWishList: true, addToCart: true },
+    include: {
+      image: true,
+      addToWishList: true,
+      addToCart: true,
+      ratings: true,
+    },
   });
-  return data;
+  return data.map((product) => {
+    const averageRating = product.ratings.length
+      ? product.ratings.reduce((sum, rating) => sum + rating.ratings, 0) /
+        product.ratings.length
+      : null;
+
+    return {
+      ...product,
+      averageRating,
+    };
+  });
 };
 
 // Single Product
@@ -217,8 +247,25 @@ export const SingleProductAction = async (id: string) => {
       brand: true,
       category: true,
       image: true,
-      ratings: true,
+      ratings: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   });
   return product;
+};
+
+export const RattingAvarageAction = async () => {
+  try {
+    const data = await db.ratings.aggregate({
+      _avg: {
+        ratings: true,
+      },
+    });
+    return data;
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
 };
