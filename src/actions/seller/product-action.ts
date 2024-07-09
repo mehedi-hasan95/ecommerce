@@ -204,3 +204,21 @@ export const WeeksProductsAction = async () => {
   });
   return data;
 };
+
+// Single Product
+export const SingleProductAction = async (id: string) => {
+  const product = await db.products.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      addToCart: true,
+      addToWishList: true,
+      brand: true,
+      category: true,
+      image: true,
+      ratings: true,
+    },
+  });
+  return product;
+};

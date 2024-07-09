@@ -13,8 +13,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { ProductModal } from "./product-modal";
 import { WishListButton } from "./wishlist-button";
-import { useAuth } from "@clerk/nextjs";
 import { AddToCartButton } from "./add-to-cart-button";
+import Link from "next/link";
 
 interface Props {
   data: Products & {
@@ -24,7 +24,6 @@ interface Props {
   };
 }
 export const SingleProduct = ({ data }: Props) => {
-  const { userId } = useAuth();
   const [quantity, setQuantity] = useState<number>(1);
 
   const increaseQuantity = () => {
@@ -115,7 +114,12 @@ export const SingleProduct = ({ data }: Props) => {
           <Star className="size-4 fill-yellow-500 text-yellow-500" />
           <p className="text-sm">(120)</p>
         </div>
-        <p className="text-xl font-medium">{data.title}</p>
+        <Link
+          href={`/shop/${data.id}`}
+          className="text-xl font-medium hover:underline"
+        >
+          {data.title}
+        </Link>
         <div className="flex gap-x-5">
           <span className="text-xl font-semibold text-custom_gray">
             {FormatPrice(data.price)}

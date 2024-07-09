@@ -34,7 +34,6 @@ interface Props {
 }
 
 export const ShopClient = ({ data, categories, price }: Props) => {
-  console.log(price._max.price);
   const router = useRouter();
   const pathName = usePathname();
   const SORT_OPTIONS = [

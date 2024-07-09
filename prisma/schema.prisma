@@ -90,6 +90,7 @@ model ProductImage {
 model Ratings {
   id        String   @id @default(uuid())
   ratings   Int
+  comments  String?
   productId String
   product   Products @relation(fields: [productId], references: [id], onDelete: Cascade)
   userId    String
