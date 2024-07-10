@@ -21,12 +21,25 @@ export const CategoryProductCountAction = async () => {
   return data;
 };
 
-export const singleCategoryProductsAction = async (categoryId: string) => {
+type SearchParams = {
+  sort?: string;
+  price?: string;
+};
+export const singleCategoryProductsAction = async (
+  categoryId: string,
+  { sort, price }: SearchParams
+) => {
+  let priceString = price;
+  let priceArray = priceString?.split(",").map(Number);
   const data = await db.products.findMany({
     where: {
       categoryId: categoryId,
+      price: {
+        gte: priceArray ? priceArray[0] : undefined,
+        lte: priceArray ? priceArray[1] : undefined,
+      },
     },
-    orderBy: { createdAt: "desc" },
+    orderBy: { price: sort as any },
     include: {
       image: true,
       addToWishList: true,

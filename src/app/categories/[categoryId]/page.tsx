@@ -2,23 +2,31 @@ import {
   inCategoryAction,
   singleCategoryProductsAction,
 } from "@/actions/user/category-brand";
-import { SingleProduct } from "@/app/_home-components/single-product";
 import { ItemNotFound } from "@/components/common/error/item-not-found";
+import { CategoryClient } from "./category-client";
+import { MaxMinPriceAciton } from "@/actions/seller/product-action";
 
-const CategoryId = async ({ params }: { params: { categoryId: string } }) => {
+interface Props {
+  searchParams: {
+    sort: string;
+    price: string;
+  };
+  params: {
+    categoryId: string;
+  };
+}
+const CategoryId = async ({ params, searchParams }: Props) => {
   const isCategory = await inCategoryAction(params.categoryId);
   if (!isCategory) {
     return <ItemNotFound title="Category" />;
   }
-  const data = await singleCategoryProductsAction(isCategory.id);
-  if (!data.length) {
-    return <ItemNotFound headding="No Product in this category" />;
-  }
+  const data = await singleCategoryProductsAction(isCategory.id, {
+    ...searchParams,
+  });
+  const maxMinPrice = await MaxMinPriceAciton();
   return (
-    <div className="max-w-screen-2xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
-      {data?.map((item) => (
-        <SingleProduct key={item.id} data={item} />
-      ))}
+    <div className="max-w-screen-2xl mx-auto px-6">
+      <CategoryClient data={data} price={maxMinPrice} />
     </div>
   );
 };
