@@ -169,7 +169,7 @@ export const AllProductsAction = async ({
   let priceString = price;
   let priceArray = priceString?.split(",").map(Number);
   const data = await db.products.findMany({
-    orderBy: { price: sort as any },
+    orderBy: sort ? { price: sort as any } : { createdAt: "desc" },
     include: {
       image: true,
       addToWishList: true,
