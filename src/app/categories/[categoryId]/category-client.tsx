@@ -30,9 +30,10 @@ import { ItemNotFound } from "@/components/common/error/item-not-found";
 interface Props {
   data: Products[];
   price: any;
+  category: string;
 }
 
-export const CategoryClient = ({ data, price }: Props) => {
+export const CategoryClient = ({ data, price, category }: Props) => {
   const router = useRouter();
   const pathName = usePathname();
   const SORT_OPTIONS = [
@@ -125,14 +126,15 @@ export const CategoryClient = ({ data, price }: Props) => {
 
   const minPrice = Math.min(filter.price.range[0], filter.price.range[1]);
   const maxPrice = Math.max(filter.price.range[0], filter.price.range[1]);
-  console.log(data);
   return (
     <div className="grid grid-cols-4 gap-5">
       <div className="col-span-1 border-r pr-2 shadow-sm">
         {/* Price  */}
         <Accordion type="multiple" className="w-full" defaultValue={["price"]}>
           <AccordionItem value="price">
-            <AccordionTrigger>Price</AccordionTrigger>
+            <AccordionTrigger className="bg-themeOne px-3">
+              Price
+            </AccordionTrigger>
             <AccordionContent className="pt-6 animate-none">
               <RadioGroup defaultValue="comfortable">
                 <ul className="space-y-4">
@@ -157,7 +159,7 @@ export const CategoryClient = ({ data, price }: Props) => {
                     </li>
                   ))}
                   <li className="flex justify-center flex-col gap-2">
-                    <div>
+                    <div className="flex items-center space-x-2">
                       <input
                         type="radio"
                         id={`price-${PRICE_FILTERS.options.length}`}
@@ -165,11 +167,11 @@ export const CategoryClient = ({ data, price }: Props) => {
                           handlePriceChange(true, DEFAULT_CUSTOM_PRICE);
                         }}
                         checked={filter.price.isCustom}
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                        className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                       />
                       <label
                         htmlFor={`price-${PRICE_FILTERS.options.length}`}
-                        className="ml-3 text-sm text-gray-600"
+                        className="ml-3 text-sm text-gray-600 font-semibold"
                       >
                         Custom
                       </label>
@@ -229,7 +231,7 @@ export const CategoryClient = ({ data, price }: Props) => {
       <div className="col-span-3">
         <div className="flex justify-between items-center gap-x-10 py-5">
           <div className="text-custom_gray text-2xl font-bold">
-            Products Collection
+            {category} Collection
           </div>
           <div className="flex gap-x-7">
             <p className="text-sm">{data.length} Products Found</p>

@@ -4,12 +4,12 @@ import { WishListButton } from "@/app/_home-components/wishlist-button";
 import { FormatPrice } from "@/lib/format-price";
 import { ProductTabs } from "./_components/product-tabs";
 import { ProductCartQuantity } from "./_components/product-cart-quantity";
-import { ProductNotFound } from "../_components/product-not-found";
+import { ItemNotFound } from "@/components/common/error/item-not-found";
 
 const ProductPage = async ({ params }: { params: { productId: string } }) => {
   const product = await SingleProductAction(params.productId);
   if (!product) {
-    return <ProductNotFound />;
+    return <ItemNotFound />;
   }
   return (
     <div className="max-w-screen-2xl px-6 py-5 mx-auto">

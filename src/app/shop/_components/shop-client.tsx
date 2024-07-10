@@ -21,11 +21,11 @@ import { Category, Products } from "@prisma/client";
 import { ChevronDown } from "lucide-react";
 import { useState, useCallback } from "react";
 import queryString from "query-string";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ProductNotFound } from "./product-not-found";
+import { usePathname, useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import debounce from "debounce";
+import { ItemNotFound } from "@/components/common/error/item-not-found";
 
 interface Props {
   data: Products[];
@@ -153,7 +153,7 @@ export const ShopClient = ({ data, categories, price }: Props) => {
             defaultValue={["categories"]}
           >
             <AccordionItem value="categories">
-              <AccordionTrigger className="py-3 text-sm text-gray-400 hover:text-gray-500">
+              <AccordionTrigger className="py-3 text-sm hover:text-gray-500 bg-themeOne px-3">
                 Categories
               </AccordionTrigger>
               <AccordionContent className="pt-6 animate-none">
@@ -182,7 +182,9 @@ export const ShopClient = ({ data, categories, price }: Props) => {
           {/* Price  */}
           <Accordion type="multiple" className="w-full">
             <AccordionItem value="item-1">
-              <AccordionTrigger>Price</AccordionTrigger>
+              <AccordionTrigger className="bg-themeOne px-3">
+                Price
+              </AccordionTrigger>
               <AccordionContent className="pt-6 animate-none">
                 <RadioGroup defaultValue="comfortable">
                   <ul className="space-y-4">
@@ -207,7 +209,7 @@ export const ShopClient = ({ data, categories, price }: Props) => {
                       </li>
                     ))}
                     <li className="flex justify-center flex-col gap-2">
-                      <div>
+                      <div className="flex items-center space-x-2">
                         <input
                           type="radio"
                           id={`price-${PRICE_FILTERS.options.length}`}
@@ -215,11 +217,11 @@ export const ShopClient = ({ data, categories, price }: Props) => {
                             handlePriceChange(true, DEFAULT_CUSTOM_PRICE);
                           }}
                           checked={filter.price.isCustom}
-                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                          className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                         />
                         <label
                           htmlFor={`price-${PRICE_FILTERS.options.length}`}
-                          className="ml-3 text-sm text-gray-600"
+                          className="ml-3 text-sm text-gray-600 font-semibold"
                         >
                           Custom
                         </label>
@@ -324,7 +326,7 @@ export const ShopClient = ({ data, categories, price }: Props) => {
               ))}
             </div>
           ) : (
-            <ProductNotFound />
+            <ItemNotFound title="Product" />
           )}
         </div>
       </div>

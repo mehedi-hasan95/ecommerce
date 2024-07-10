@@ -26,7 +26,11 @@ const CategoryId = async ({ params, searchParams }: Props) => {
   const maxMinPrice = await MaxMinPriceAciton();
   return (
     <div className="max-w-screen-2xl mx-auto px-6">
-      <CategoryClient data={data} price={maxMinPrice} />
+      <CategoryClient
+        data={data}
+        price={maxMinPrice}
+        category={isCategory.name}
+      />
     </div>
   );
 };
