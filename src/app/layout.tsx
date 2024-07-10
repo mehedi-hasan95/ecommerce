@@ -27,12 +27,16 @@ export default function RootLayout({
     <html lang="en">
       <ClerkProvider>
         <body className={poppins.className}>
-          <div className="max-w-screen-2xl mx-auto px-6 py-5">
-            <PrimaryNav />
-            <SeconderyNav />
+          <div className="flex flex-col justify-between h-screen">
+            <div>
+              <div className="max-w-screen-2xl mx-auto px-6 py-5">
+                <PrimaryNav />
+                <SeconderyNav />
+              </div>
+              {children}
+            </div>
+            <Footer />
           </div>
-          {children}
-          <Footer />
           <Toaster />
         </body>
       </ClerkProvider>
