@@ -17,7 +17,7 @@ const ShopPage = async ({ searchParams }: Props) => {
   const categories = await AllCategoryAction();
   const maxMinPrice = await MaxMinPriceAciton();
   return (
-    <div className="max-w-screen-2xl mx-auto px-6 py-8">
+    <div className="max-w-screen-2xl mx-auto px-6 pb-8">
       <ShopClient data={products} categories={categories} price={maxMinPrice} />
     </div>
   );

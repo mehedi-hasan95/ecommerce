@@ -144,37 +144,9 @@ export const ShopClient = ({ data, categories, price }: Props) => {
   const maxPrice = Math.max(filter.price.range[0], filter.price.range[1]);
   return (
     <div>
-      <div className="flex justify-between items-center gap-x-10">
-        <h2 className="text-3xl font-bold">Page title</h2>
-        <div>
-          <DropdownMenu>
-            <DropdownMenuTrigger className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
-              Sort{" "}
-              <ChevronDown className="-mr-1 ml-1 size-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {SORT_OPTIONS.map((item) => (
-                <button
-                  className={cn("text-left w-full block px-4 py-2 text-sm", {
-                    "text-gray-900 bg-gray-100": item.value === filter.sort,
-                    "text-gray-500": item.value !== filter.sort,
-                  })}
-                  key={item.value}
-                  onClick={() => handleSortChange(item.value)}
-                >
-                  {item.name}
-                </button>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
-      <Separator className="my-5" />
       {/* Products  */}
       <div className="grid grid-cols-4 gap-5">
-        <div className="col-span-1">
+        <div className="col-span-1 border-r pr-2 shadow-sm">
           <Accordion
             type="multiple"
             className="animate-none"
@@ -305,6 +277,46 @@ export const ShopClient = ({ data, categories, price }: Props) => {
           </Accordion>
         </div>
         <div className="col-span-3">
+          <div className="bg-[url('/top-banner.png')] bg-cover bg-center p-20 space-y-4">
+            <p className="text-[#FF5C00] font-medium">Buy 1 Get 1</p>
+            <h3 className="text-2xl font-bold text-themeTwo max-w-64">
+              Up to 30% Discount on Selected Items
+            </h3>
+          </div>
+          <div className="flex justify-between items-center gap-x-10 py-5">
+            <div className="text-custom_gray text-2xl font-bold">
+              Products Collection
+            </div>
+            <div className="flex gap-x-7">
+              <p className="text-sm">{data.length} Products Found</p>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="group inline-flex justify-center text-sm text-gray-700 hover:text-gray-900">
+                  Default Sorting{" "}
+                  <ChevronDown className="-mr-1 ml-1 size-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuSeparator />
+                  {SORT_OPTIONS.map((item) => (
+                    <button
+                      className={cn(
+                        "text-left w-full block px-4 py-2 text-sm",
+                        {
+                          "text-gray-900 bg-gray-100":
+                            item.value === filter.sort,
+                          "text-gray-500": item.value !== filter.sort,
+                        }
+                      )}
+                      key={item.value}
+                      onClick={() => handleSortChange(item.value)}
+                    >
+                      {item.name}
+                    </button>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+          <Separator className="mb-2" />
           {data.length ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
               {data.map((item) => (
