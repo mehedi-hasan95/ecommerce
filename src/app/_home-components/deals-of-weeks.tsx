@@ -9,9 +9,27 @@ import {
 } from "@/components/ui/carousel";
 import { SingleProduct } from "./single-product";
 import { WeeksProductsAction } from "@/actions/seller/product-action";
+import {
+  AddToCart,
+  AddToWishList,
+  ProductImage,
+  Products,
+  Ratings,
+} from "@prisma/client";
 
-export const DealsOfWeeks = async () => {
-  const products = await WeeksProductsAction();
+interface Props {
+  productData: Promise<
+    (Products & {
+      image: ProductImage[];
+      addToCart: AddToCart[];
+      addToWishList: AddToWishList[];
+      ratings: Ratings[];
+      averageRating: number | null;
+    })[]
+  >;
+}
+export const DealsOfWeeks = async ({ productData }: Props) => {
+  const products = await productData;
   return (
     <div className="relative max-w-screen-2xl mx-auto px-6 pt-4 md:pt-6 lg:pt-10">
       <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold">
