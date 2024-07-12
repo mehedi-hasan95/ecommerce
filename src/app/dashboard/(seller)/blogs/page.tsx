@@ -1,4 +1,4 @@
-import { allBlogAction } from "@/actions/seller/blog-action";
+import { userAllBlogAction } from "@/actions/seller/blog-action";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
@@ -6,7 +6,7 @@ import Link from "next/link";
 import { BlogClient } from "./_components/blog-client";
 
 const WriteBlog = async () => {
-  const blogs = await allBlogAction();
+  const blogs = await userAllBlogAction();
   const modifyData = blogs.map((item) => ({
     id: item.id,
     title: item.title,

@@ -1,7 +1,4 @@
-import {
-  AllProductsAction,
-  SingleProductAction,
-} from "@/actions/seller/product-action";
+import { SingleProductAction } from "@/actions/seller/product-action";
 import { ImageTabs } from "@/app/_home-components/image-tabs";
 import { WishListButton } from "@/app/_home-components/wishlist-button";
 import { FormatPrice } from "@/lib/format-price";
@@ -10,13 +7,13 @@ import { ProductCartQuantity } from "./_components/product-cart-quantity";
 import { ItemNotFound } from "@/components/common/error/item-not-found";
 import { db } from "@/lib/prisma";
 
-// export async function generateStaticParams() {
-//   const data = await db.products.findMany();
+export async function generateStaticParams() {
+  const posts = await db.products.findMany();
 
-//   return data.map((item) => ({
-//     id: item.id,
-//   }));
-// }
+  return posts.map((post) => ({
+    productId: post.id,
+  }));
+}
 const ProductPage = async ({ params }: { params: { productId: string } }) => {
   const product = await SingleProductAction(params.productId);
   if (!product) {

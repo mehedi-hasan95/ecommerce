@@ -64,10 +64,6 @@ export const singleBlogAction = async (id: string) => {
 
 export const userAllBlogAction = async () => {
   const { userId } = auth();
-  const role = await userRole();
-  if (!userId && role === ("ADMIN" || "seller")) {
-    return { error: "Unauthorize User" };
-  }
   const data = await db.blog.findMany({
     where: {
       userId: userId as string,

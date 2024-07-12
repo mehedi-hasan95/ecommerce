@@ -6,6 +6,7 @@ import { ItemNotFound } from "@/components/common/error/item-not-found";
 import { BrandClient } from "./brand-client";
 import { MaxMinPriceAciton } from "@/actions/seller/product-action";
 import { AllCategoryAction } from "@/actions/admin/category-aciton";
+import { AllBrandAction } from "@/actions/admin/brand-aciton";
 
 interface Props {
   searchParams: {
@@ -16,6 +17,14 @@ interface Props {
   params: {
     brandId: string;
   };
+}
+
+export async function generateStaticParams() {
+  const posts = await AllBrandAction();
+
+  return posts.map((post) => ({
+    brandId: post.id,
+  }));
 }
 const BrandId = async ({ params, searchParams }: Props) => {
   const isBrand = await inbrandAction(params.brandId);

@@ -5,6 +5,7 @@ import {
 import { ItemNotFound } from "@/components/common/error/item-not-found";
 import { CategoryClient } from "./category-client";
 import { MaxMinPriceAciton } from "@/actions/seller/product-action";
+import { AllCategoryAction } from "@/actions/admin/category-aciton";
 
 interface Props {
   searchParams: {
@@ -14,6 +15,14 @@ interface Props {
   params: {
     categoryId: string;
   };
+}
+
+export async function generateStaticParams() {
+  const posts = await AllCategoryAction();
+
+  return posts.map((post) => ({
+    categoryId: post.id,
+  }));
 }
 const CategoryId = async ({ params, searchParams }: Props) => {
   const isCategory = await inCategoryAction(params.categoryId);
