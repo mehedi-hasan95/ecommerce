@@ -3,13 +3,34 @@ import { ItemNotFound } from "@/components/common/error/item-not-found";
 import { Preview } from "@/components/custom/preview";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { Metadata } from "next";
 
 export async function generateStaticParams() {
   const posts = await allBlogAction();
 
   return posts.map((post) => ({
-    id: post.id,
+    blogId: post.id,
   }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { blogId: string };
+}): Promise<Metadata> {
+  const data = await singleBlogAction(params.blogId);
+
+  return {
+    title: data?.title,
+    description: data?.short_desc,
+    generator: "Next.js",
+    applicationName: "Next.js",
+    referrer: "origin-when-cross-origin",
+    keywords: data?.tags,
+    authors: [{ name: "Mehedi Hasan", url: "https://mehedi95.vercel.app/" }],
+    creator: "Mehedi Hasan",
+    publisher: "Mehedi Hasan",
+  };
 }
 const BlogId = async ({ params }: { params: { blogId: string } }) => {
   const data = await singleBlogAction(params.blogId);
