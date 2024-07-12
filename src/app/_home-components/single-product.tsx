@@ -9,7 +9,7 @@ import {
   Products,
   Ratings,
 } from "@prisma/client";
-import { Minus, Plus, Star } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { ProductModal } from "./product-modal";
@@ -17,7 +17,6 @@ import { WishListButton } from "./wishlist-button";
 import { AddToCartButton } from "./add-to-cart-button";
 import Link from "next/link";
 import StarRating from "./star-rating";
-import { AllProductsAction } from "@/actions/seller/product-action";
 
 interface Props {
   data: Products & {

@@ -4,6 +4,7 @@ import { db } from "@/lib/prisma";
 import { userRole } from "@/lib/roles";
 import { WriteBlogSchema } from "@/schemas/schema";
 import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const createBlogAction = async (
@@ -21,6 +22,7 @@ export const createBlogAction = async (
         userId: userId as string,
       },
     });
+    revalidatePath("/dashboard/blogs");
     return { success: "Blog created successfully" };
   } catch (error) {
     return { error: "Something went wrong" };
@@ -46,6 +48,7 @@ export const updateBlogActoin = async (
         ...values,
       },
     });
+    revalidatePath("/dashboard/blogs");
     return { success: "Blog update successfully" };
   } catch (error) {
     return { error: "Something went wrong" };
@@ -83,10 +86,34 @@ export const allBlogAction = async () => {
       title: true,
       image: true,
       short_desc: true,
+      createdAt: true,
     },
     orderBy: {
       createdAt: "desc",
     },
   });
   return data;
+};
+
+// Bulk Delete
+export const bulkDeleteBlogAction = async (ids: string[]) => {
+  try {
+    const { userId } = auth();
+    const user = await userRole();
+    if (user !== ("ADMIN" || "seller")) {
+      return { error: "Unauthorize user" };
+    }
+    await db.blog.deleteMany({
+      where: {
+        id: {
+          in: ids,
+        },
+        userId: userId as string,
+      },
+    });
+    revalidatePath("/dashboard/blogs");
+    return { success: "Blog Delete Successfully" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
 };

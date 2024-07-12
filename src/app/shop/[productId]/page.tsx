@@ -10,13 +10,13 @@ import { ProductCartQuantity } from "./_components/product-cart-quantity";
 import { ItemNotFound } from "@/components/common/error/item-not-found";
 import { db } from "@/lib/prisma";
 
-export async function generateStaticParams() {
-  const data = await db.products.findMany();
+// export async function generateStaticParams() {
+//   const data = await db.products.findMany();
 
-  return data.map((item) => ({
-    id: item.id,
-  }));
-}
+//   return data.map((item) => ({
+//     id: item.id,
+//   }));
+// }
 const ProductPage = async ({ params }: { params: { productId: string } }) => {
   const product = await SingleProductAction(params.productId);
   if (!product) {
