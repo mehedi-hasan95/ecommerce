@@ -122,3 +122,12 @@ body {
 .cl-userButtonPopoverFooter {
   display: none;
 }
+
+.editor-edit .ql-editor.ql-blank {
+  min-height: 200px;
+}
+
+.editor-preview .ql-editor {
+  font-size: 16px;
+  padding: 0;
+}

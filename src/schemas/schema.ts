@@ -52,3 +52,27 @@ export const AddToCartSchema = z.object({
   }),
   offer: z.enum([Offer.BUY_ONE_GET_ONE, Offer.SPECIAL_OFFERS]).optional(),
 });
+
+export const WriteBlogSchema = z.object({
+  title: z
+    .string()
+    .min(2, {
+      message: "Blog title is required",
+    })
+    .max(200, {
+      message: "Title should be at most 50 words or 200 characters",
+    }),
+  short_desc: z
+    .string()
+    .min(2, {
+      message: "Short description title is required",
+    })
+    .max(400, {
+      message: "Description should be at most 100 words or 400 characters",
+    }),
+  desc: z.string().min(2, {
+    message: "Description should at least 2 words",
+  }),
+  tags: z.array(z.string()).min(2, { message: "Please add some tags" }),
+  image: z.string({ message: "Image is required" }),
+});

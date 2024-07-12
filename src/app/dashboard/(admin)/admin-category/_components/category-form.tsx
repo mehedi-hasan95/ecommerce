@@ -35,7 +35,7 @@ export const CategoryForm = ({ initialData }: Props) => {
   const router = useRouter();
   const title = initialData ? "Update Category" : "Create Category";
   const action = initialData ? "Update" : "Create";
-  const afterActin = initialData ? "Updating" : "Creating";
+  const afterAction = initialData ? "Updating" : "Creating";
   // 1. Define your form.
   const form = useForm<z.infer<typeof CategorySchema>>({
     resolver: zodResolver(CategorySchema),
@@ -142,7 +142,7 @@ export const CategoryForm = ({ initialData }: Props) => {
           />
 
           {isPending ? (
-            <UpdateButton>{afterActin}</UpdateButton>
+            <UpdateButton>{afterAction}</UpdateButton>
           ) : (
             <Button type="submit">{action}</Button>
           )}

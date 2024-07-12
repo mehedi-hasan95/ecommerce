@@ -29,21 +29,6 @@ interface Props {
   };
 }
 
-interface productProps {
-  searchParams: {
-    sort: string;
-    categories: string;
-    price: string;
-  };
-}
-export async function generateStaticParams({ searchParams }: productProps) {
-  const data = await AllProductsAction({ ...searchParams });
-
-  return data.map((item) => ({
-    id: item.id,
-  }));
-}
-
 export const SingleProduct = ({ data }: Props) => {
   const [quantity, setQuantity] = useState<number>(1);
 
