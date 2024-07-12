@@ -123,8 +123,9 @@ body {
   display: none;
 }
 
-.editor-edit .ql-editor.ql-blank {
+.editor-edit .ql-editor {
   min-height: 200px;
+  font-size: 16px;
 }
 
 .editor-preview .ql-editor {

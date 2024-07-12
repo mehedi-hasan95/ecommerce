@@ -76,3 +76,17 @@ export const WriteBlogSchema = z.object({
   tags: z.array(z.string()).min(2, { message: "Please add some tags" }),
   image: z.string({ message: "Image is required" }),
 });
+
+export const ContactSchema = z.object({
+  name: z
+    .string({ message: "Name is required" })
+    .max(20, { message: "Name length is maximum 5 words or 20 characters" }),
+  email: z
+    .string({ message: "Email is required" })
+    .max(40, { message: "Email length is maximum 10 words or 40 characters" }),
+  message: z
+    .string({ message: "Message is required" })
+    .max(200, {
+      message: "Message length is maximum 50 words or 200 characters",
+    }),
+});

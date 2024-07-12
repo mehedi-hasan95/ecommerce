@@ -40,3 +40,24 @@ export const AllCartAction = async () => {
   });
   return data;
 };
+
+export const userIndividualCart = async () => {
+  const { userId } = auth();
+  const data = await db.addToCart.findMany({
+    where: {
+      userId: userId as string,
+    },
+    include: {
+      product: {
+        select: {
+          title: true,
+          price: true,
+        },
+      },
+    },
+    orderBy: {
+      updatedAt: "desc",
+    },
+  });
+  return data;
+};
