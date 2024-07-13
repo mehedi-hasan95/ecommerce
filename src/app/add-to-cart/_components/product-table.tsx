@@ -1,72 +1,129 @@
+"use client";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { ItemNotFound } from "@/components/common/error/item-not-found";
+import { AddToCart, ProductImage } from "@prisma/client";
+import { CartProduct } from "./cart-product";
 import { Button } from "@/components/ui/button";
+import { useState, useTransition } from "react";
+import {
+  deleteAllCartAction,
+  updateCartAction,
+} from "@/actions/user/add-to-cart-action";
+import { toast } from "sonner";
 import { FormatPrice } from "@/lib/format-price";
-import { AddToCart, Products } from "@prisma/client";
-import { Trash2 } from "lucide-react";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface Props {
-  data: (AddToCart & { product: { title: string; price: number } })[];
+  data: (AddToCart & {
+    product: { title: string; price: number } & { image: ProductImage[] };
+  })[];
 }
+
 export const ProductTable = ({ data }: Props) => {
-  if (!data.length) {
+  const [cartData, setCartData] = useState(data);
+  const [isPending, startTransaction] = useTransition();
+  const [isWeating, startDeleteTransaction] = useTransition();
+  const router = useRouter();
+
+  const updateQuantity = (id: string, quantity: number) => {
+    setCartData((prevData) =>
+      prevData.map((item) => (item.id === id ? { ...item, quantity } : item))
+    );
+  };
+
+  const totalPrice = cartData.reduce((acc, cur) => {
+    const itemPrice = cur.quantity * cur.product.price;
+    return acc + itemPrice;
+  }, 0);
+
+  const handleUpdateCart = async () => {
+    const updatedItems = cartData.map((item) => ({
+      id: item.id,
+      quantity: item.quantity,
+    }));
+    startTransaction(() => {
+      updateCartAction(updatedItems).then((data) => {
+        if (data.success) {
+          toast.success("Product update successfully");
+        } else {
+          toast.error(data.error);
+        }
+      });
+    });
+  };
+
+  const removeAllCart = () => {
+    startTransaction(() => {
+      deleteAllCartAction().then((data) => {
+        if (data.success) {
+          toast.success(data.success);
+          router.refresh();
+        } else {
+          toast.error(data.error);
+        }
+      });
+    });
+  };
+
+  if (!cartData.length) {
     return <ItemNotFound headding="No product in this cart" />;
   }
+
   return (
-    <table className="border-collapse table-auto w-full text-sm">
-      <thead>
-        <tr className="text-start">
-          <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
-            Remove
-          </th>
-          <th className="border-b dark:border-slate-600 font-medium p-4 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
-            Image
-          </th>
-          <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
-            Product
-          </th>
-          <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
-            Price
-          </th>
-          <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
-            Quantity
-          </th>
-          <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
-            Total
-          </th>
-        </tr>
-      </thead>
-      {data.map((item) => (
-        <tbody key={item.id}>
-          <tr>
-            <td className="border-b border-r border-l border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
-              <Button variant={"outline"}>
-                <Trash2 className="size-5" />
-              </Button>
-            </td>
-            <td className="border-b border-r border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
-              <Image
-                src="https://utfs.io/f/a2926654-ae12-425a-a81b-b9a5ab61b3c6-pfwxj4.png"
-                alt=""
-                height={50}
-                width={50}
-              />
-            </td>
-            <td className="border-b border-r border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
-              {item.product.title}
-            </td>
-            <td className="border-b border-r border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
-              {FormatPrice(item.product.price)}
-            </td>
-            <td className="border-b border-r border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
-              -1+
-            </td>
-            <td className="border-b border-r border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
-              {FormatPrice(160)}
-            </td>
-          </tr>
-        </tbody>
-      ))}
-    </table>
+    <>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">Remove</TableHead>
+            <TableHead>Image</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Quantity</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead className="text-right">Total Price</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {cartData.map((item) => (
+            <CartProduct
+              data={item}
+              key={item.id}
+              updateQuantity={updateQuantity}
+            />
+          ))}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={5}>Total</TableCell>
+            <TableCell className="text-right">
+              {FormatPrice(totalPrice)}
+            </TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
+      <div className="flex justify-between items-center pt-4">
+        <Button
+          disabled={isPending}
+          onClick={handleUpdateCart}
+          className="bg-green-600 hover:bg-green-600/80"
+        >
+          Update Cart
+        </Button>
+        <Button
+          onClick={removeAllCart}
+          disabled={isPending}
+          variant={"destructive"}
+        >
+          Remove All
+        </Button>
+      </div>
+    </>
   );
 };

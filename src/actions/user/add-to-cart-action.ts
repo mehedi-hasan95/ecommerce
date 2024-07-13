@@ -43,15 +43,15 @@ export const AllCartAction = async () => {
 
 export const userIndividualCart = async () => {
   const { userId } = auth();
+  if (!userId) return [];
   const data = await db.addToCart.findMany({
     where: {
       userId: userId as string,
     },
     include: {
       product: {
-        select: {
-          title: true,
-          price: true,
+        include: {
+          image: true,
         },
       },
     },
@@ -60,4 +60,52 @@ export const userIndividualCart = async () => {
     },
   });
   return data;
+};
+
+export const updateCartAction = async (
+  items: { id: string; quantity: number }[]
+) => {
+  try {
+    for (const item of items) {
+      await db.addToCart.updateMany({
+        where: { id: item.id },
+        data: { quantity: item.quantity },
+      });
+    }
+    return { success: "Cart update successfully" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
+};
+
+// Delete a single cart
+export const deleteCartAction = async (id: string) => {
+  try {
+    const { userId } = auth();
+    await db.addToCart.delete({
+      where: {
+        id,
+        userId: userId as string,
+      },
+    });
+    return { success: "Cart Delete Successfully" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
+};
+
+// Remove all cart
+export const deleteAllCartAction = async () => {
+  try {
+    const { userId } = auth();
+    await db.addToCart.deleteMany({
+      where: {
+        userId: userId as string,
+      },
+    });
+    revalidatePath("/add-to-cart");
+    return { success: "Cart Delete Successfully" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
 };
