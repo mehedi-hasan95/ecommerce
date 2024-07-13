@@ -16,11 +16,14 @@ interface Props {
   data: AddToCart & {
     product: { title: string; price: number } & { image: ProductImage[] };
   };
-  updateQuantity: (id: string, quantity: number) => void; // New prop for updating quantity
+  updateQuantity: (id: string, quantity: number) => void;
+  removeItem: (id: string) => void; // New prop for removing an item
 }
-export const CartProduct = ({ data, updateQuantity }: Props) => {
+
+export const CartProduct = ({ data, updateQuantity, removeItem }: Props) => {
   const [isPending, startTransaction] = useTransition();
   const router = useRouter();
+
   const increaseQuantity = () => {
     updateQuantity(data.id, data.quantity + 1);
   };
@@ -31,19 +34,20 @@ export const CartProduct = ({ data, updateQuantity }: Props) => {
     }
   };
 
-  // Delete product
   const onDelete = () => {
     startTransaction(() => {
-      deleteCartAction(data.id).then((data) => {
-        if (data.success) {
-          toast.success(data.success);
+      deleteCartAction(data.id).then((result) => {
+        if (result.success) {
+          toast.success(result.success);
+          removeItem(data.id);
           router.refresh();
         } else {
-          toast.error(data.error);
+          toast.error(result.error);
         }
       });
     });
   };
+
   return (
     <TableRow key={data.id}>
       <TableCell className="font-medium">

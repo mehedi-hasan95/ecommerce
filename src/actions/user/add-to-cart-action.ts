@@ -62,6 +62,7 @@ export const userIndividualCart = async () => {
   return data;
 };
 
+// update cart
 export const updateCartAction = async (
   items: { id: string; quantity: number }[]
 ) => {
@@ -72,6 +73,7 @@ export const updateCartAction = async (
         data: { quantity: item.quantity },
       });
     }
+    revalidatePath("/add-to-cart");
     return { success: "Cart update successfully" };
   } catch (error) {
     return { error: "Something went wrong" };

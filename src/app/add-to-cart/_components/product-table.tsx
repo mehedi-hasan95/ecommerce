@@ -30,13 +30,16 @@ interface Props {
 export const ProductTable = ({ data }: Props) => {
   const [cartData, setCartData] = useState(data);
   const [isPending, startTransaction] = useTransition();
-  const [isWeating, startDeleteTransaction] = useTransition();
   const router = useRouter();
 
   const updateQuantity = (id: string, quantity: number) => {
     setCartData((prevData) =>
       prevData.map((item) => (item.id === id ? { ...item, quantity } : item))
     );
+  };
+
+  const removeItem = (id: string) => {
+    setCartData((prevData) => prevData.filter((item) => item.id !== id));
   };
 
   const totalPrice = cartData.reduce((acc, cur) => {
@@ -52,7 +55,7 @@ export const ProductTable = ({ data }: Props) => {
     startTransaction(() => {
       updateCartAction(updatedItems).then((data) => {
         if (data.success) {
-          toast.success("Product update successfully");
+          toast.success("Product updated successfully");
         } else {
           toast.error(data.error);
         }
@@ -65,6 +68,7 @@ export const ProductTable = ({ data }: Props) => {
       deleteAllCartAction().then((data) => {
         if (data.success) {
           toast.success(data.success);
+          setCartData([]);
           router.refresh();
         } else {
           toast.error(data.error);
@@ -96,6 +100,7 @@ export const ProductTable = ({ data }: Props) => {
               data={item}
               key={item.id}
               updateQuantity={updateQuantity}
+              removeItem={removeItem} // Pass the removeItem function
             />
           ))}
         </TableBody>
