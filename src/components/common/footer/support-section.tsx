@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export const SupportSection = () => {
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-4 max-w-screen-2xl mx-auto px-6">
+    <div className="grid md:grid-cols-2 lg:grid-cols-4 max-w-screen-2xl mx-auto px-6 gap-3">
       <div className="flex gap-x-3 items-center">
         <Image src={"/call-center.png"} alt="" height={80} width={80} />
         <span>

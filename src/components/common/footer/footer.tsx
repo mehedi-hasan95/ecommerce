@@ -5,8 +5,8 @@ export const Footer = () => {
   return (
     <div className="bg-gray-50">
       <div className="max-w-screen-2xl mx-auto px-6 py-10">
-        <div className="grid grid-cols-5 items-center">
-          <div className="col-span-3 space-y-3">
+        <div className="grid md:grid-cols-5 items-center">
+          <div className="md:col-span-3 space-y-3">
             <Logo />
             <p className="max-w-2xl">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
@@ -15,7 +15,7 @@ export const Footer = () => {
               nisl turpis. Elit et dictum lacus morbi nec accumsan a in.
             </p>
           </div>
-          <div className="col-span-1 space-y-3">
+          <div className="md:col-span-1 space-y-3">
             <h5 className="text-lg font-medium">About Us</h5>
             <ul className="space-y-3">
               <li>
@@ -35,7 +35,7 @@ export const Footer = () => {
               </li>
             </ul>
           </div>
-          <div className="col-span-1 space-y-3">
+          <div className="md:col-span-1 space-y-3">
             <h5 className="text-lg font-medium">Info</h5>
             <ul className="space-y-3">
               <li>

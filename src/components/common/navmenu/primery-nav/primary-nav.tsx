@@ -6,8 +6,12 @@ export const PrimaryNav = () => {
   return (
     <div className="flex justify-between items-center">
       <Logo />
-      <SearchBar />
-      <UserAction />
+      <div className="hidden md:block">
+        <SearchBar />
+      </div>
+      <div className="hidden md:block">
+        <UserAction />
+      </div>
     </div>
   );
 };

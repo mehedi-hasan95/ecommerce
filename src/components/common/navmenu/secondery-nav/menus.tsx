@@ -11,7 +11,7 @@ export const Menus = () => {
   const isActive =
     pathname === "/dashboard" || pathname?.startsWith(`/dashboard/`);
   return (
-    <div className="flex gap-x-9">
+    <div className="flex flex-col md:flex-row gap-y-3 md:gap-x-4 lg:gap-x-9">
       {menus.map((menu) => (
         <MenuItem key={menu.id} href={menu.url} label={menu.name} />
       ))}
