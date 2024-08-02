@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { FormatPrice } from "@/lib/format-price";
 import { AddToCart, ProductImage } from "@prisma/client";
@@ -12,6 +14,7 @@ export const SubTotal = ({ data }: Props) => {
     const itemPrice = cur.quantity * cur.product.price;
     return acc + itemPrice;
   }, 0);
+
   return (
     <div className="space-y-4 bg-gray-100 px-5 pt-10 pb-20">
       <div className="flex flex-col gap-y-4">

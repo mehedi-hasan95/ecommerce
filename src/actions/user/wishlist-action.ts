@@ -43,3 +43,36 @@ export const WishListCount = async () => {
   });
   return data;
 };
+
+export const allWishlistAction = async () => {
+  const { userId } = auth();
+  if (!userId) return null;
+  const data = await db.addToWishList.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      product: {
+        include: {
+          ratings: true,
+          image: true,
+          addToCart: true,
+          addToWishList: true,
+        },
+      },
+    },
+  });
+  return data.map((product) => {
+    const averageRating = product.product.ratings.length
+      ? product.product.ratings.reduce(
+          (sum, rating) => sum + rating.ratings,
+          0
+        ) / product.product.ratings.length
+      : null;
+
+    return {
+      ...product,
+      averageRating,
+    };
+  });
+};
