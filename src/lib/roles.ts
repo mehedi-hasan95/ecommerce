@@ -15,3 +15,14 @@ export const userRole = async () => {
   });
   return data?.role;
 };
+
+export const loginUser = async () => {
+  const { userId } = auth();
+  if (!userId) redirect("/auth/sign-in");
+  const data = await db.user.findUnique({
+    where: {
+      clerkId: userId as string,
+    },
+  });
+  return data?.clerkId;
+};

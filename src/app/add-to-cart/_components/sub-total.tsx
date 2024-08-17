@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { FormatPrice } from "@/lib/format-price";
 import { AddToCart, ProductImage } from "@prisma/client";
+import { useState } from "react";
 
 interface Props {
   data: (AddToCart & {
@@ -10,11 +11,35 @@ interface Props {
   })[];
 }
 export const SubTotal = ({ data }: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const totalPrice = data.reduce((acc, cur) => {
     const itemPrice = cur.quantity * cur.product.price;
     return acc + itemPrice;
   }, 0);
 
+  const onCart = async () => {
+    setIsLoading(true);
+    try {
+      // const rettriveData = { data };
+      const response = await fetch("/api/payment", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data }),
+      });
+
+      const result = await response.json();
+      if (result) {
+        window.location.href = result.url;
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <div className="space-y-4 bg-gray-100 px-5 pt-10 pb-20">
       <div className="flex flex-col gap-y-4">
@@ -35,7 +60,9 @@ export const SubTotal = ({ data }: Props) => {
         <h2 className="text-xl font-semibold">Subtotal</h2>
         <h2 className="text-xl font-semibold">{FormatPrice(totalPrice)}</h2>
       </div>
-      <Button disabled={!data.length}>Checkout</Button>
+      <Button onClick={onCart} disabled={!data.length || isLoading}>
+        {isLoading ? "Processing..." : "Checkout"}
+      </Button>
     </div>
   );
 };

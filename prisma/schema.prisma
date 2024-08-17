@@ -139,9 +139,7 @@ enum OrderStatus {
 
 model Order {
   id        String      @id @default(cuid())
-  title     String
-  img       String?
-  cartId    String      @unique
+  cartId    String
   quantity  Int
   productId String
   userId    String
