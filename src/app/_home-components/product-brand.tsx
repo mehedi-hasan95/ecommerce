@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import { Brand } from "@prisma/client";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Props {
   brands: Promise<Brand[]>;
@@ -24,27 +25,26 @@ export const ProductBrand = async ({ brands }: Props) => {
       <Carousel className="w-full pt-8">
         <CarouselContent>
           {data.map((item) => (
-            <CarouselItem
-              className="basis-1/2 md:basis-1/3 lg:basis-1/5"
-              key={item.id}
-            >
-              <div className="p-1">
-                <Card>
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <div className="flex flex-col gap-y-2 items-center">
-                      <Image
-                        src={item.img}
-                        alt={item.name}
-                        height={100}
-                        width={100}
-                        style={{ height: "auto", width: "auto" }}
-                      />
-                      <p>{item.name}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </CarouselItem>
+            <Link href={`/brands/${item.id}`} key={item.id}>
+              <CarouselItem className="basis-1/2 md:basis-1/3 lg:basis-1/5">
+                <div className="p-1">
+                  <Card>
+                    <CardContent className="flex aspect-square items-center justify-center p-6">
+                      <div className="flex flex-col gap-y-2 items-center">
+                        <Image
+                          src={item.img}
+                          alt={item.name}
+                          height={100}
+                          width={100}
+                          style={{ height: "auto", width: "auto" }}
+                        />
+                        <p>{item.name}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CarouselItem>
+            </Link>
           ))}
         </CarouselContent>
         <div className="absolute -top-4 right-10">

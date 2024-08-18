@@ -9,6 +9,7 @@ import {
   CarouselProgress,
 } from "@/components/ui/carousel";
 import Image from "next/image";
+import Link from "next/link";
 
 export const ProductCategory = async () => {
   const categories = await AllCategoryAction();
@@ -20,29 +21,28 @@ export const ProductCategory = async () => {
       <Carousel className="w-full pt-8">
         <CarouselContent>
           {categories.map((category) => (
-            <CarouselItem
-              className="basis-1/2 md:basis-1/4 lg:basis-1/6"
-              key={category.id}
-            >
-              <div className="p-1">
-                <Card>
-                  <CardContent
-                    className="flex aspect-square items-center justify-center p-6"
-                    style={{ backgroundColor: category.color || "#F7F7F7" }}
-                  >
-                    <div className="flex flex-col gap-y-2 items-center">
-                      <Image
-                        src={category.img}
-                        alt={category.name}
-                        height={100}
-                        width={100}
-                      />
-                      <p>{category.name}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </CarouselItem>
+            <Link href={`/categories/${category.id}`} key={category.id}>
+              <CarouselItem className="basis-1/2 md:basis-1/4 lg:basis-1/6">
+                <div className="p-1">
+                  <Card>
+                    <CardContent
+                      className="flex aspect-square items-center justify-center p-6"
+                      style={{ backgroundColor: category.color || "#F7F7F7" }}
+                    >
+                      <div className="flex flex-col gap-y-2 items-center">
+                        <Image
+                          src={category.img}
+                          alt={category.name}
+                          height={100}
+                          width={100}
+                        />
+                        <p>{category.name}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CarouselItem>
+            </Link>
           ))}
         </CarouselContent>
         <div className="absolute -top-4 right-10">
